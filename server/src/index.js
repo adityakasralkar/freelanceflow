@@ -33,7 +33,9 @@ app.get('/api/health', (req, res) => {
   });
 });
 
-// TODO: mount routes here
+// Routes
+const authRoutes = require('./routes/auth.routes');
+app.use('/api/auth', authRoutes);
 
 // 404 handler for unknown routes
 app.use((req, res) => {
