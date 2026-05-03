@@ -31,10 +31,10 @@ function getProposalById(id, freelancerId) {
 }
 
 function createProposal(freelancerId, data) {
-  const { client_id, title, description, amount, status, valid_until, payment_terms, deliverables } = data;
+  const { client_id, title, description, amount, status, valid_until, payment_terms, deliverables, currency } = data;
   return query(
-    `INSERT INTO proposals (freelancer_id, client_id, title, description, amount, status, valid_until, payment_terms, deliverables)
-     VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)
+    `INSERT INTO proposals (freelancer_id, client_id, title, description, amount, status, valid_until, payment_terms, deliverables, currency)
+     VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)
      RETURNING *`,
     [
       freelancerId,
@@ -46,12 +46,13 @@ function createProposal(freelancerId, data) {
       valid_until || null,
       payment_terms || null,
       JSON.stringify(deliverables || []),
+      currency || 'INR',
     ]
   );
 }
 
 function updateProposal(id, freelancerId, data) {
-  const allowed = ['title', 'description', 'amount', 'valid_until', 'payment_terms', 'deliverables', 'client_id'];
+  const allowed = ['title', 'description', 'amount', 'valid_until', 'payment_terms', 'deliverables', 'client_id', 'currency'];
   const fields = Object.entries(data).filter(([k]) => allowed.includes(k));
   if (fields.length === 0) return getProposalById(id, freelancerId);
 

@@ -6,7 +6,8 @@
   "scripts": {
     "start": "node src/index.js",
     "dev": "nodemon src/index.js",
-    "db:setup": "node src/config/setupDb.js"
+    "db:setup": "node src/config/setupDb.js",
+    "db:migrate": "node src/config/migrate.js"
   },
   "keywords": [],
   "author": "",

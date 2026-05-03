@@ -6,6 +6,7 @@ const {
   updateClient,
   deleteClient,
 } = require('../models/client.model');
+const { SUPPORTED_CURRENCIES } = require('../utils/currencies');
 
 const clientSchema = z.object({
   name: z.string().min(1),
@@ -13,6 +14,7 @@ const clientSchema = z.object({
   email: z.string().email().optional(),
   phone: z.string().optional(),
   location: z.string().optional(),
+  currency: z.enum(SUPPORTED_CURRENCIES).optional(),
 });
 
 async function getAll(req, res, next) {
