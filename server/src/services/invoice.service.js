@@ -8,12 +8,10 @@ const VALID_TRANSITIONS = {
   overdue: ['paid'],
 };
 
-const GST_RATE = 0.18;
-
 async function generateFromMilestone(milestoneId, freelancerId, extraData = {}) {
-  // Fetch milestone and project
+  // Fetch milestone + project (to inherit currency)
   const msResult = await query(
-    `SELECT m.*, p.client_id, p.freelancer_id AS project_freelancer_id, p.id AS project_id
+    `SELECT m.*, p.client_id, p.freelancer_id AS project_freelancer_id, p.id AS project_id, p.currency AS project_currency
      FROM milestones m
      JOIN projects p ON p.id = m.project_id
      WHERE m.id = $1`,
@@ -54,8 +52,11 @@ async function generateFromMilestone(milestoneId, freelancerId, extraData = {}) 
   const invoiceNumber = await generateInvoiceNumber();
 
   const subtotal = parseFloat(milestone.amount);
-  const gstAmount = +(subtotal * GST_RATE).toFixed(2);
-  const totalAmount = +(subtotal + gstAmount).toFixed(2);
+  const taxRate = extraData.tax_rate !== undefined ? Number(extraData.tax_rate) : 0;
+  const taxLabel = extraData.tax_label || null;
+  const taxAmount = +(subtotal * taxRate).toFixed(2);
+  const totalAmount = +(subtotal + taxAmount).toFixed(2);
+  const currency = extraData.currency || milestone.project_currency || 'INR';
 
   const issueDate = extraData.issue_date || new Date().toISOString().split('T')[0];
   const dueDate = extraData.due_date || (() => {
@@ -67,8 +68,9 @@ async function generateFromMilestone(milestoneId, freelancerId, extraData = {}) 
   // Insert invoice
   const invResult = await query(
     `INSERT INTO invoices (project_id, milestone_id, freelancer_id, client_id, invoice_number,
-                           issue_date, due_date, subtotal, gst_amount, total_amount, status, notes)
-     VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, 'draft', $11)
+                           issue_date, due_date, subtotal, tax_amount, tax_rate, tax_label,
+                           total_amount, status, currency, notes)
+     VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, 'draft', $13, $14)
      RETURNING *`,
     [
       milestone.project_id,
@@ -79,8 +81,11 @@ async function generateFromMilestone(milestoneId, freelancerId, extraData = {}) 
       issueDate,
       dueDate,
       subtotal,
-      gstAmount,
+      taxAmount,
+      taxRate,
+      taxLabel,
       totalAmount,
+      currency,
       extraData.notes || null,
     ]
   );

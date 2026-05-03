@@ -34,10 +34,10 @@ async function convertToProject(proposalId, freelancerId, projectData) {
     throw err;
   }
 
-  // Create project from proposal
+  // Create project from proposal — inherit currency
   const projectResult = await query(
-    `INSERT INTO projects (proposal_id, freelancer_id, client_id, title, description, start_date, end_date, total_amount, status)
-     VALUES ($1, $2, $3, $4, $5, $6, $7, $8, 'active')
+    `INSERT INTO projects (proposal_id, freelancer_id, client_id, title, description, start_date, end_date, total_amount, status, currency)
+     VALUES ($1, $2, $3, $4, $5, $6, $7, $8, 'active', $9)
      RETURNING *`,
     [
       proposalId,
@@ -48,6 +48,7 @@ async function convertToProject(proposalId, freelancerId, projectData) {
       projectData.start_date || null,
       projectData.end_date || null,
       proposal.amount,
+      proposal.currency || 'INR',
     ]
   );
 

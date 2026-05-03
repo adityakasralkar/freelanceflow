@@ -7,7 +7,9 @@ const {
   updateProposalStatus,
   deleteProposal,
 } = require('../models/proposal.model');
+const { getClientById } = require('../models/client.model');
 const { validateStatusTransition, convertToProject } = require('../services/proposal.service');
+const { SUPPORTED_CURRENCIES } = require('../utils/currencies');
 
 const proposalSchema = z.object({
   client_id: z.string().uuid(),
@@ -17,6 +19,7 @@ const proposalSchema = z.object({
   valid_until: z.string().optional(),
   payment_terms: z.string().optional(),
   deliverables: z.array(z.string()).optional(),
+  currency: z.enum(SUPPORTED_CURRENCIES).optional(),
 });
 
 const statusSchema = z.object({
@@ -52,7 +55,18 @@ async function create(req, res, next) {
     if (!parsed.success) {
       return res.status(400).json({ success: false, error: 'Validation failed', details: parsed.error.errors, code: 400 });
     }
-    const result = await createProposal(req.user.id, { ...parsed.data, status: 'draft' });
+
+    // Inherit currency from client if not explicitly provided
+    let currency = parsed.data.currency;
+    if (!currency) {
+      const clientResult = await getClientById(parsed.data.client_id, req.user.id);
+      if (clientResult.rows.length === 0) {
+        return res.status(400).json({ success: false, error: 'Client not found', code: 400 });
+      }
+      currency = clientResult.rows[0].currency || 'INR';
+    }
+
+    const result = await createProposal(req.user.id, { ...parsed.data, currency, status: 'draft' });
     res.status(201).json({ success: true, data: result.rows[0], message: 'Proposal created successfully' });
   } catch (err) {
     next(err);

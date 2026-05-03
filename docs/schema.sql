@@ -27,6 +27,7 @@ CREATE TABLE IF NOT EXISTS clients (
   email         VARCHAR(255),
   phone         VARCHAR(50),
   location      VARCHAR(255),
+  currency      VARCHAR(3) DEFAULT 'INR',
   created_at    TIMESTAMPTZ DEFAULT NOW()
 );
 
@@ -44,6 +45,7 @@ CREATE TABLE IF NOT EXISTS proposals (
   valid_until    DATE,
   payment_terms  VARCHAR(100),
   deliverables   JSONB DEFAULT '[]',
+  currency       VARCHAR(3) DEFAULT 'INR',
   created_at     TIMESTAMPTZ DEFAULT NOW()
 );
 
@@ -61,6 +63,7 @@ CREATE TABLE IF NOT EXISTS projects (
   end_date      DATE,
   total_amount  NUMERIC(12,2),
   status        VARCHAR(20) DEFAULT 'active' CHECK (status IN ('active', 'on_hold', 'completed', 'archived')),
+  currency      VARCHAR(3) DEFAULT 'INR',
   created_at    TIMESTAMPTZ DEFAULT NOW()
 );
 
@@ -92,9 +95,12 @@ CREATE TABLE IF NOT EXISTS invoices (
   issue_date     DATE NOT NULL,
   due_date       DATE NOT NULL,
   subtotal       NUMERIC(12,2) NOT NULL,
-  gst_amount     NUMERIC(12,2) DEFAULT 0,
+  tax_amount     NUMERIC(12,2) DEFAULT 0,
+  tax_rate       NUMERIC(5,4) DEFAULT 0,
+  tax_label      VARCHAR(20),
   total_amount   NUMERIC(12,2) NOT NULL,
   status         VARCHAR(20) DEFAULT 'draft' CHECK (status IN ('draft', 'sent', 'paid', 'overdue')),
+  currency       VARCHAR(3) DEFAULT 'INR',
   notes          TEXT,
   created_at     TIMESTAMPTZ DEFAULT NOW()
 );
