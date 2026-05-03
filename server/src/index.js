@@ -37,10 +37,15 @@ app.get('/api/health', (req, res) => {
 const authRoutes = require('./routes/auth.routes');
 const clientsRoutes = require('./routes/clients.routes');
 const proposalsRoutes = require('./routes/proposals.routes');
+const projectsRoutes = require('./routes/projects.routes');
+const milestonesRouter = require('./routes/milestones.routes');
 
 app.use('/api/auth', authRoutes);
 app.use('/api/clients', clientsRoutes);
 app.use('/api/proposals', proposalsRoutes);
+app.use('/api/projects', projectsRoutes);
+app.use('/api/projects/:projectId/milestones', milestonesRouter);
+app.use('/api/milestones', milestonesRouter);
 
 // 404 handler for unknown routes
 app.use((req, res) => {
