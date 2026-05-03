@@ -40,6 +40,7 @@ const proposalsRoutes = require('./routes/proposals.routes');
 const projectsRoutes = require('./routes/projects.routes');
 const milestonesRouter = require('./routes/milestones.routes');
 const invoicesRoutes = require('./routes/invoices.routes');
+const clientPortalRoutes = require('./routes/clientPortal.routes');
 
 app.use('/api/auth', authRoutes);
 app.use('/api/clients', clientsRoutes);
@@ -48,6 +49,7 @@ app.use('/api/projects', projectsRoutes);
 app.use('/api/projects/:projectId/milestones', milestonesRouter);
 app.use('/api/milestones', milestonesRouter);
 app.use('/api/invoices', invoicesRoutes);
+app.use('/api/client-portal', clientPortalRoutes);
 
 // 404 handler for unknown routes
 app.use((req, res) => {
