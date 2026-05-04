@@ -45,9 +45,8 @@ export function formatDateShort(dateString: string | null | undefined): string {
   return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
 }
 
-type ClassValue = string | number | null | false | undefined;
-export function cn(...classes: ClassValue[]): string {
-  return classes.filter(Boolean).join(' ');
+export function cn(...classes: unknown[]): string {
+  return classes.filter((c) => typeof c === 'string' && c.length > 0).join(' ');
 }
 
 export function getInitials(name: string | null | undefined): string {
