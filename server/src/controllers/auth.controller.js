@@ -5,13 +5,19 @@ const {
   findByEmail,
   findById,
   findByVerificationToken,
+  findByPasswordResetToken,
   createUser,
   setEmailVerified,
   setVerificationToken,
+  setPasswordResetToken,
+  setNewPassword,
 } = require('../models/user.model');
 const { passwordSchema } = require('../utils/passwordValidator');
 const { generateToken, expiryHours } = require('../utils/tokenGenerator');
-const { sendVerificationEmail } = require('../services/email.service');
+const {
+  sendVerificationEmail,
+  sendPasswordResetEmail,
+} = require('../services/email.service');
 
 // ---------------------------------------------------------------------------
 // Schemas
@@ -267,6 +273,95 @@ async function resendVerification(req, res, next) {
 }
 
 // ---------------------------------------------------------------------------
+// POST /api/auth/forgot-password  { email }
+// ---------------------------------------------------------------------------
+async function forgotPassword(req, res, next) {
+  try {
+    const parsed = emailSchema.safeParse(req.body);
+    if (!parsed.success) return validationError(res, parsed.error);
+
+    const result = await findByEmail(parsed.data.email);
+
+    // Same response in every case to avoid leaking which emails are registered.
+    const safeMessage = {
+      success: true,
+      message:
+        'If an account with that email exists, a password reset link has been sent.',
+    };
+
+    if (result.rows.length === 0) return res.json(safeMessage);
+    const user = result.rows[0];
+
+    const resetToken = generateToken();
+    const resetExpires = expiryHours(1);
+
+    await setPasswordResetToken(user.id, resetToken, resetExpires);
+
+    try {
+      await sendPasswordResetEmail(user.email, resetToken, user.name);
+    } catch (mailErr) {
+      console.error('Failed to send password reset email:', mailErr.message);
+    }
+
+    res.json(safeMessage);
+  } catch (err) {
+    next(err);
+  }
+}
+
+// ---------------------------------------------------------------------------
+// POST /api/auth/reset-password  { token, password }
+// ---------------------------------------------------------------------------
+const resetPasswordSchema = z.object({
+  token: z.string().min(1, 'Token is required'),
+  password: passwordSchema,
+});
+
+async function resetPassword(req, res, next) {
+  try {
+    const parsed = resetPasswordSchema.safeParse(req.body);
+    if (!parsed.success) return validationError(res, parsed.error);
+
+    const { token, password } = parsed.data;
+
+    const result = await findByPasswordResetToken(token);
+    if (result.rows.length === 0) {
+      return res.status(400).json({
+        success: false,
+        error: 'Invalid or already-used reset link',
+        code: 400,
+      });
+    }
+
+    const user = result.rows[0];
+
+    if (
+      user.password_reset_expires &&
+      new Date(user.password_reset_expires) < new Date()
+    ) {
+      return res.status(400).json({
+        success: false,
+        error: 'Reset link has expired. Please request a new one.',
+        code: 'TOKEN_EXPIRED',
+      });
+    }
+
+    const passwordHash = await bcrypt.hash(password, 10);
+    const updated = await setNewPassword(user.id, passwordHash);
+    const cleanUser = safeUser(updated.rows[0]);
+    const jwtToken = generateJwt(cleanUser);
+
+    res.json({
+      success: true,
+      data: { user: cleanUser, token: jwtToken },
+      message: 'Password updated. You are now signed in.',
+    });
+  } catch (err) {
+    next(err);
+  }
+}
+
+// ---------------------------------------------------------------------------
 // GET /api/auth/me
 // ---------------------------------------------------------------------------
 async function getMe(req, res, next) {
@@ -288,5 +383,7 @@ module.exports = {
   login,
   verifyEmail,
   resendVerification,
+  forgotPassword,
+  resetPassword,
   getMe,
 };
