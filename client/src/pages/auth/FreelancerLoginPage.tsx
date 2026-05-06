@@ -22,6 +22,9 @@ export default function FreelancerLoginPage() {
   const navigate = useNavigate();
   const login = useAuthStore((s) => s.login);
   const [submitError, setSubmitError] = useState<string | null>(null);
+  const [unverifiedEmail, setUnverifiedEmail] = useState<string | null>(null);
+  const [resendNotice, setResendNotice] = useState<string | null>(null);
+  const [isResending, setIsResending] = useState(false);
 
   const {
     register,
@@ -31,13 +34,37 @@ export default function FreelancerLoginPage() {
 
   async function onSubmit(values: LoginForm) {
     setSubmitError(null);
+    setUnverifiedEmail(null);
+    setResendNotice(null);
     try {
       const data = await api.post<{ user: User; token: string }>('/auth/login', values);
       login(data.user, data.token);
       navigate({ to: data.user.role === 'client' ? '/client/dashboard' : '/dashboard' });
     } catch (err) {
-      const msg = err instanceof ApiError ? err.message : 'Login failed';
-      setSubmitError(msg);
+      if (err instanceof ApiError) {
+        // Backend signals unverified accounts with HTTP 403 + "verify your email" message.
+        if (err.status === 403 || /verify your email/i.test(err.message)) {
+          setUnverifiedEmail(values.email);
+          return;
+        }
+        setSubmitError(err.message);
+        return;
+      }
+      setSubmitError('Login failed. Please try again.');
+    }
+  }
+
+  async function handleResend() {
+    if (!unverifiedEmail) return;
+    setIsResending(true);
+    setResendNotice(null);
+    try {
+      await api.post('/auth/resend-verification', { email: unverifiedEmail });
+      setResendNotice('Verification email sent. Please check your inbox.');
+    } catch {
+      setResendNotice('Could not resend right now. Please try again in a minute.');
+    } finally {
+      setIsResending(false);
     }
   }
 
@@ -52,9 +79,7 @@ export default function FreelancerLoginPage() {
         'See cash flow at a glance',
       ]}
     >
-      <h2 className="text-2xl font-semibold tracking-tight text-[#111827]">
-        Sign in
-      </h2>
+      <h2 className="text-2xl font-semibold tracking-tight text-[#111827]">Sign in</h2>
       <p className="mt-1 text-sm text-[#667085]">
         Welcome back — enter your details to continue.
       </p>
@@ -79,9 +104,39 @@ export default function FreelancerLoginPage() {
           {...register('password')}
         />
 
+        <div className="flex justify-end">
+          <Link
+            to="/forgot-password"
+            className="text-xs font-medium text-[#0F9F72] hover:text-[#087252]"
+          >
+            Forgot password?
+          </Link>
+        </div>
+
         {submitError && (
           <div className="rounded-lg border border-[#FECACA] bg-[#FEF2F2] px-3 py-2 text-sm text-[#DC2626]">
             {submitError}
+          </div>
+        )}
+
+        {unverifiedEmail && (
+          <div className="rounded-lg border border-[#FDE68A] bg-[#FFF7ED] px-3 py-3 text-sm text-[#D97706]">
+            <p className="font-medium">Please verify your email before logging in.</p>
+            <p className="mt-1 text-xs text-[#92400E]">
+              We sent a verification link to{' '}
+              <span className="font-medium">{unverifiedEmail}</span>. Didn't get it?
+            </p>
+            <button
+              type="button"
+              onClick={handleResend}
+              disabled={isResending}
+              className="mt-2 text-xs font-semibold text-[#D97706] underline-offset-2 hover:underline disabled:opacity-60"
+            >
+              {isResending ? 'Sending…' : 'Resend verification email'}
+            </button>
+            {resendNotice && (
+              <p className="mt-1 text-xs text-[#065F46]">{resendNotice}</p>
+            )}
           </div>
         )}
 
@@ -89,6 +144,13 @@ export default function FreelancerLoginPage() {
           Sign in
         </Button>
       </form>
+
+      <div className="mt-6 text-center text-sm text-[#667085]">
+        Don't have an account?{' '}
+        <Link to="/register" className="font-medium text-[#0F9F72] hover:text-[#087252]">
+          Sign up →
+        </Link>
+      </div>
 
       <div className="mt-8 border-t border-[#E5E9F0] pt-4 text-center text-sm text-[#667085]">
         Are you a client?{' '}
