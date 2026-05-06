@@ -8,12 +8,17 @@ CREATE EXTENSION IF NOT EXISTS "pgcrypto";
 -- users
 -- -----------------------------------------------------------------------------
 CREATE TABLE IF NOT EXISTS users (
-  id            UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-  email         VARCHAR(255) UNIQUE NOT NULL,
-  password_hash VARCHAR(255) NOT NULL,
-  role          VARCHAR(20) NOT NULL CHECK (role IN ('freelancer', 'client')),
-  name          VARCHAR(255) NOT NULL,
-  created_at    TIMESTAMPTZ DEFAULT NOW()
+  id                          UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  email                       VARCHAR(255) UNIQUE NOT NULL,
+  password_hash               VARCHAR(255) NOT NULL,
+  role                        VARCHAR(20) NOT NULL CHECK (role IN ('freelancer', 'client')),
+  name                        VARCHAR(255) NOT NULL,
+  email_verified              BOOLEAN DEFAULT FALSE,
+  email_verification_token    VARCHAR(255),
+  email_verification_expires  TIMESTAMPTZ,
+  password_reset_token        VARCHAR(255),
+  password_reset_expires      TIMESTAMPTZ,
+  created_at                  TIMESTAMPTZ DEFAULT NOW()
 );
 
 -- -----------------------------------------------------------------------------
@@ -118,6 +123,21 @@ CREATE TABLE IF NOT EXISTS invoice_items (
 );
 
 -- -----------------------------------------------------------------------------
+-- invitations
+-- -----------------------------------------------------------------------------
+CREATE TABLE IF NOT EXISTS invitations (
+  id             UUID         PRIMARY KEY DEFAULT gen_random_uuid(),
+  freelancer_id  UUID         NOT NULL REFERENCES users(id)   ON DELETE CASCADE,
+  client_id      UUID         NOT NULL REFERENCES clients(id) ON DELETE CASCADE,
+  email          VARCHAR(255) NOT NULL,
+  token          VARCHAR(255) UNIQUE NOT NULL,
+  expires_at     TIMESTAMPTZ  NOT NULL,
+  accepted_at    TIMESTAMPTZ,
+  revoked_at     TIMESTAMPTZ,
+  created_at     TIMESTAMPTZ  DEFAULT NOW()
+);
+
+-- -----------------------------------------------------------------------------
 -- Indexes
 -- -----------------------------------------------------------------------------
 CREATE INDEX IF NOT EXISTS idx_clients_freelancer_id       ON clients(freelancer_id);
@@ -136,3 +156,9 @@ CREATE INDEX IF NOT EXISTS idx_invoices_project_id         ON invoices(project_i
 CREATE INDEX IF NOT EXISTS idx_invoices_milestone_id       ON invoices(milestone_id);
 CREATE INDEX IF NOT EXISTS idx_invoices_status             ON invoices(status);
 CREATE INDEX IF NOT EXISTS idx_invoice_items_invoice_id    ON invoice_items(invoice_id);
+CREATE INDEX IF NOT EXISTS idx_users_email_verification_token ON users(email_verification_token);
+CREATE INDEX IF NOT EXISTS idx_users_password_reset_token     ON users(password_reset_token);
+CREATE INDEX IF NOT EXISTS idx_invitations_token              ON invitations(token);
+CREATE INDEX IF NOT EXISTS idx_invitations_email              ON invitations(LOWER(email));
+CREATE INDEX IF NOT EXISTS idx_invitations_freelancer_id      ON invitations(freelancer_id);
+CREATE INDEX IF NOT EXISTS idx_invitations_client_id          ON invitations(client_id);
