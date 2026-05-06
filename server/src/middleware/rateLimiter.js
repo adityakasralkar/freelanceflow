@@ -8,10 +8,12 @@ const standardResponse = (req, res) => {
   });
 };
 
-// Strict: login endpoint — 5 attempts per 15 minutes per IP
+// Strict: login endpoint — 5 FAILED attempts per 15 minutes per IP.
+// Successful logins don't count against the limit.
 const loginLimiter = rateLimit({
   windowMs: 15 * 60 * 1000,
   limit: 5,
+  skipSuccessfulRequests: true,
   standardHeaders: 'draft-7',
   legacyHeaders: false,
   handler: standardResponse,
