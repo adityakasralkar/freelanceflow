@@ -14,19 +14,19 @@ interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 
 const VARIANT_CLASSES: Record<Variant, string> = {
   primary:
-    'bg-[#0F9F72] text-white hover:bg-[#087252] disabled:bg-[#0F9F72]/50 shadow-[0_1px_3px_rgba(15,23,42,0.06)]',
+    'bg-[var(--green)] text-white border border-[var(--green)] hover:bg-[var(--green-dark)] hover:border-[var(--green-dark)] disabled:opacity-60',
   secondary:
-    'bg-white text-[#111827] border border-[#E5E9F0] hover:bg-[#F8FAFC] disabled:opacity-60',
+    'bg-[var(--panel)] text-[var(--text)] border border-[var(--line-strong)] hover:bg-[var(--panel-soft)] hover:border-[var(--muted)] disabled:opacity-60',
   danger:
-    'bg-[#DC2626] text-white hover:bg-[#B91C1C] disabled:bg-[#DC2626]/50',
+    'bg-[var(--red)] text-white border border-[var(--red)] hover:bg-[#b91c1c] hover:border-[#b91c1c] disabled:opacity-60',
   ghost:
-    'bg-transparent text-[#667085] hover:bg-[#F3F6FA] hover:text-[#111827]',
+    'bg-transparent text-[var(--muted)] border border-transparent hover:bg-[#f1f3f6] hover:text-[var(--text)]',
 };
 
 const SIZE_CLASSES: Record<Size, string> = {
-  sm: 'h-8 px-3 text-sm',
-  md: 'h-10 px-4 text-sm',
-  lg: 'h-12 px-6 text-base',
+  sm: 'h-[30px] px-2.5 text-xs',
+  md: 'h-9 px-3.5 text-[13px]',
+  lg: 'h-11 px-5 text-sm',
 };
 
 export default function Button({
@@ -44,8 +44,8 @@ export default function Button({
       type={type}
       disabled={disabled || isLoading}
       className={cn(
-        'inline-flex items-center justify-center gap-2 rounded-lg font-medium transition-colors',
-        'focus:outline-none focus-visible:ring-2 focus-visible:ring-[#0F9F72]/40',
+        'inline-flex items-center justify-center gap-1.5 rounded-[7px] font-semibold transition-colors whitespace-nowrap font-[Inter]',
+        'focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--green)]/30',
         'disabled:cursor-not-allowed',
         VARIANT_CLASSES[variant],
         SIZE_CLASSES[size],

@@ -21,14 +21,14 @@ const Input = forwardRef<HTMLInputElement, InputProps>(function Input(
       {label && (
         <label
           htmlFor={inputId}
-          className="mb-1.5 block text-sm font-medium text-[#111827]"
+          className="mb-1.5 block text-xs font-semibold text-[var(--text)]"
         >
           {label}
         </label>
       )}
       <div className="relative">
         {leftIcon && (
-          <div className="pointer-events-none absolute inset-y-0 left-3 flex items-center text-[#98A2B3]">
+          <div className="pointer-events-none absolute inset-y-0 left-3 flex items-center text-[var(--faint)]">
             {leftIcon}
           </div>
         )}
@@ -36,12 +36,12 @@ const Input = forwardRef<HTMLInputElement, InputProps>(function Input(
           id={inputId}
           ref={ref}
           className={cn(
-            'h-10 w-full rounded-lg border bg-white px-3 text-sm text-[#111827] outline-none transition-colors',
-            'placeholder:text-[#98A2B3]',
-            'focus:ring-2 focus:ring-[#0F9F72]/40',
+            'h-[38px] w-full rounded-[7px] border bg-white px-3 text-[13px] text-[var(--text)] outline-none transition-colors font-[Inter]',
+            'placeholder:text-[var(--faint)]',
+            'focus:ring-2 focus:ring-[var(--green)]/15',
             error
-              ? 'border-[#DC2626] focus:border-[#DC2626] focus:ring-[#DC2626]/30'
-              : 'border-[#E5E9F0] focus:border-[#0F9F72]',
+              ? 'border-[var(--red)] focus:border-[var(--red)] focus:ring-[var(--red)]/20'
+              : 'border-[var(--line-strong)] focus:border-[var(--green)]',
             leftIcon && 'pl-10',
             rightAddon && 'pr-12',
             className
@@ -49,15 +49,15 @@ const Input = forwardRef<HTMLInputElement, InputProps>(function Input(
           {...rest}
         />
         {rightAddon && (
-          <div className="absolute inset-y-0 right-3 flex items-center text-sm text-[#667085]">
+          <div className="absolute inset-y-0 right-3 flex items-center text-[13px] text-[var(--muted)]">
             {rightAddon}
           </div>
         )}
       </div>
       {error ? (
-        <p className="mt-1 text-xs text-[#DC2626]">{error}</p>
+        <p className="mt-1 text-xs text-[var(--red)]">{error}</p>
       ) : helperText ? (
-        <p className="mt-1 text-xs text-[#98A2B3]">{helperText}</p>
+        <p className="mt-1 text-[11px] text-[var(--muted)]">{helperText}</p>
       ) : null}
     </div>
   );

@@ -19,7 +19,7 @@ export default function Drawer({
   subtitle,
   children,
   footer,
-  width = 440,
+  width = 460,
 }: DrawerProps) {
   useEffect(() => {
     if (!isOpen) return;
@@ -39,36 +39,46 @@ export default function Drawer({
   return (
     <div
       onClick={onClose}
-      className="fixed inset-0 z-50 flex justify-end bg-black/40"
+      className="fixed inset-0 z-50 flex justify-end"
+      style={{ background: 'rgba(16, 24, 40, 0.20)' }}
     >
       <div
         onClick={(e) => e.stopPropagation()}
-        style={{ width }}
-        className="flex h-full flex-col bg-white shadow-[0_8px_22px_rgba(15,23,42,0.09)] animate-in slide-in-from-right"
+        style={{
+          width,
+          boxShadow: '-16px 0 50px rgba(16,24,40,0.10)',
+        }}
+        className="flex h-full flex-col border-l border-[var(--line)] bg-white"
       >
         {(title || subtitle) && (
-          <div className="flex items-start justify-between border-b border-[#E5E9F0] px-6 py-4">
+          <div className="flex items-center justify-between gap-2 border-b border-[var(--line)] px-5 py-4">
             <div className="min-w-0 flex-1">
               {title && (
-                <h3 className="truncate text-base font-semibold text-[#111827]">{title}</h3>
+                <h3 className="truncate text-[15px] font-bold text-[var(--text)]">
+                  {title}
+                </h3>
               )}
               {subtitle && (
-                <p className="mt-0.5 truncate text-sm text-[#667085]">{subtitle}</p>
+                <p className="mt-0.5 truncate text-[12px] text-[var(--muted)]">
+                  {subtitle}
+                </p>
               )}
             </div>
             <button
               type="button"
               onClick={onClose}
-              className="ml-2 rounded-lg p-1.5 text-[#667085] transition-colors hover:bg-[#F3F6FA] hover:text-[#111827]"
+              className="grid h-8 w-8 place-items-center rounded-md text-[var(--muted)] transition-colors hover:bg-[#f1f3f6] hover:text-[var(--text)]"
               aria-label="Close"
             >
               <X className="h-5 w-5" strokeWidth={1.5} />
             </button>
           </div>
         )}
-        <div className="flex-1 overflow-y-auto px-6 py-5">{children}</div>
+        <div className="flex flex-1 flex-col gap-[18px] overflow-y-auto p-5">
+          {children}
+        </div>
         {footer && (
-          <div className="flex items-center justify-end gap-2 border-t border-[#E5E9F0] bg-[#F8FAFC] px-6 py-4">
+          <div className="flex flex-col gap-2.5 border-t border-[var(--line)] px-5 py-3.5">
             {footer}
           </div>
         )}

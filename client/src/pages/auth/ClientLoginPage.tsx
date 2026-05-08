@@ -55,6 +55,7 @@ export default function ClientLoginPage() {
         'Review and acknowledge invoices',
         'Download invoice copies any time',
       ]}
+      clientVariant
     >
       <h2 className="text-2xl font-semibold tracking-tight text-[#111827]">
         Client access
