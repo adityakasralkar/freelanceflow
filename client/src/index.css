@@ -1,10 +1,68 @@
 @import 'tailwindcss';
 
+/* ---------------------------------------------------------------------------
+   Design tokens — synced with docs/design-bundle/project/styles.css
+   --------------------------------------------------------------------------- */
+:root {
+  --bg: #f6f7f9;
+  --panel: #ffffff;
+  --panel-soft: #f8fafc;
+  --line: #e4e7ec;
+  --line-strong: #d0d5dd;
+  --text: #101828;
+  --muted: #667085;
+  --faint: #98a2b3;
+  --green: #0f9f72;
+  --green-dark: #087252;
+  --green-soft: #eaf8f2;
+  --blue: #2563eb;
+  --blue-soft: #eff6ff;
+  --amber: #d97706;
+  --amber-soft: #fff7ed;
+  --red: #dc2626;
+  --red-soft: #fef2f2;
+  --purple: #7c3aed;
+  --purple-soft: #f5f3ff;
+  --shadow-sm: 0 1px 2px rgba(16, 24, 40, 0.04);
+  --shadow: 0 8px 20px rgba(16, 24, 40, 0.05);
+  --radius: 8px;
+  --radius-lg: 12px;
+}
+
 body {
   margin: 0;
-  font-family: 'Inter', system-ui, -apple-system, sans-serif;
-  background: #f6f7f9;
-  color: #111827;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 14px;
+  background: var(--bg);
+  color: var(--text);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+.mono {
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+}
+
+/* Auth side gradients (preserved from design-bundle styles.css) */
+.ff-auth-side {
+  background: linear-gradient(160deg, #f8fafc, #eaf8f2 120%);
+  position: relative;
+  overflow: hidden;
+}
+.ff-auth-side.client {
+  background: linear-gradient(160deg, #f8fafc, #eff6ff 120%);
+}
+.ff-auth-side::before {
+  content: '';
+  position: absolute;
+  top: -100px;
+  right: -100px;
+  width: 360px;
+  height: 360px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(15, 159, 114, 0.08), transparent 70%);
+  pointer-events: none;
+}
+.ff-auth-side.client::before {
+  background: radial-gradient(circle, rgba(37, 99, 235, 0.08), transparent 70%);
 }

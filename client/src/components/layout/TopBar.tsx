@@ -1,33 +1,76 @@
-import { Bell } from 'lucide-react';
+import { Bell, ChevronRight, Search } from 'lucide-react';
 import type { ReactNode } from 'react';
-import { useAuthStore } from '../../store/authStore';
-import Avatar from '../shared/Avatar';
+
+interface BreadcrumbItem {
+  label: string;
+}
 
 interface TopBarProps {
   title: string;
   subtitle?: string;
   actions?: ReactNode;
+  breadcrumb?: BreadcrumbItem[];
+  searchPlaceholder?: string;
 }
 
-export default function TopBar({ title, subtitle, actions }: TopBarProps) {
-  const user = useAuthStore((s) => s.user);
-
+export default function TopBar({
+  title,
+  subtitle,
+  actions,
+  breadcrumb,
+  searchPlaceholder,
+}: TopBarProps) {
   return (
-    <header className="flex h-[52px] shrink-0 items-center justify-between border-b border-[#E5E9F0] bg-white px-6">
-      <div>
-        <h1 className="text-base font-semibold text-[#111827]">{title}</h1>
-        {subtitle && <p className="text-xs text-[#98A2B3]">{subtitle}</p>}
+    <header className="flex h-16 shrink-0 items-center justify-between gap-4 border-b border-[var(--line)] bg-white px-6">
+      <div className="min-w-0 flex-1">
+        {breadcrumb && breadcrumb.length > 0 && (
+          <div className="mb-1 flex items-center gap-1.5 text-[12px] text-[var(--muted)]">
+            {breadcrumb.map((b, i) => (
+              <span key={i} className="inline-flex items-center gap-1.5">
+                {i > 0 && <ChevronRight className="h-3 w-3" strokeWidth={1.5} />}
+                <span
+                  className={
+                    i === breadcrumb.length - 1
+                      ? 'font-semibold text-[var(--text)]'
+                      : ''
+                  }
+                >
+                  {b.label}
+                </span>
+              </span>
+            ))}
+          </div>
+        )}
+        <h1 className="truncate text-[18px] font-bold tracking-[-0.01em] text-[var(--text)]">
+          {title}
+        </h1>
+        {subtitle && (
+          <p className="mt-0.5 text-[12px] text-[var(--muted)]">{subtitle}</p>
+        )}
       </div>
+
       <div className="flex items-center gap-2">
-        {actions}
+        {searchPlaceholder && (
+          <div className="relative w-[280px]">
+            <Search
+              className="pointer-events-none absolute left-3 top-1/2 h-3.5 w-3.5 -translate-y-1/2 text-[var(--faint)]"
+              strokeWidth={1.75}
+            />
+            <input
+              type="text"
+              placeholder={searchPlaceholder}
+              className="h-[38px] w-full rounded-[7px] border border-[var(--line-strong)] bg-white pl-9 pr-3 text-[13px] text-[var(--text)] placeholder:text-[var(--faint)] outline-none transition-colors focus:border-[var(--green)] focus:ring-2 focus:ring-[var(--green)]/15"
+            />
+          </div>
+        )}
         <button
           type="button"
-          className="rounded-lg p-2 text-[#667085] transition-colors hover:bg-[#F3F6FA] hover:text-[#111827]"
+          className="grid h-9 w-9 place-items-center rounded-[7px] border border-[var(--line-strong)] bg-white text-[var(--muted)] transition-colors hover:bg-[var(--panel-soft)] hover:text-[var(--text)]"
           aria-label="Notifications"
         >
-          <Bell className="h-4 w-4" strokeWidth={1.5} />
+          <Bell className="h-4 w-4" strokeWidth={1.75} />
         </button>
-        <Avatar name={user?.name} size="md" />
+        {actions}
       </div>
     </header>
   );

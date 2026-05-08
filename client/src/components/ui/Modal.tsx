@@ -13,10 +13,10 @@ interface ModalProps {
   size?: 'sm' | 'md' | 'lg';
 }
 
-const SIZE_CLASSES = {
-  sm: 'max-w-md',
-  md: 'max-w-xl',
-  lg: 'max-w-3xl',
+const SIZE_WIDTH: Record<NonNullable<ModalProps['size']>, number> = {
+  sm: 420,
+  md: 520,
+  lg: 640,
 };
 
 export default function Modal({
@@ -46,34 +46,43 @@ export default function Modal({
   return (
     <div
       onClick={onClose}
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4"
+      className="fixed inset-0 z-50 grid place-items-center p-4 backdrop-blur-[3px]"
+      style={{ background: 'rgba(16, 24, 40, 0.55)' }}
     >
       <div
         onClick={(e) => e.stopPropagation()}
         className={cn(
-          'flex w-full max-h-[90vh] flex-col overflow-hidden rounded-2xl bg-white shadow-[0_8px_22px_rgba(15,23,42,0.09)]',
-          SIZE_CLASSES[size]
+          'flex w-full max-h-[90vh] flex-col overflow-hidden bg-white shadow-[0_24px_60px_rgba(16,24,40,0.25)]'
         )}
+        style={{ borderRadius: '14px', maxWidth: SIZE_WIDTH[size] }}
       >
         {(title || subtitle) && (
-          <div className="flex items-start justify-between border-b border-[#E5E9F0] px-6 py-4">
+          <div className="flex items-start justify-between gap-4 px-6 pb-3 pt-5">
             <div>
-              {title && <h3 className="text-lg font-semibold text-[#111827]">{title}</h3>}
-              {subtitle && <p className="mt-0.5 text-sm text-[#667085]">{subtitle}</p>}
+              {title && (
+                <h3 className="text-[17px] font-bold tracking-[-0.01em] text-[var(--text)]">
+                  {title}
+                </h3>
+              )}
+              {subtitle && (
+                <p className="mt-1 text-[12px] text-[var(--muted)]">{subtitle}</p>
+              )}
             </div>
             <button
               type="button"
               onClick={onClose}
-              className="rounded-lg p-1.5 text-[#667085] transition-colors hover:bg-[#F3F6FA] hover:text-[#111827]"
+              className="grid h-8 w-8 place-items-center rounded-md text-[var(--muted)] transition-colors hover:bg-[#f1f3f6] hover:text-[var(--text)]"
               aria-label="Close"
             >
               <X className="h-5 w-5" strokeWidth={1.5} />
             </button>
           </div>
         )}
-        <div className="flex-1 overflow-y-auto px-6 py-5">{children}</div>
+        <div className="flex flex-1 flex-col gap-3.5 overflow-y-auto px-6 pb-5 pt-2">
+          {children}
+        </div>
         {footer && (
-          <div className="flex items-center justify-end gap-2 border-t border-[#E5E9F0] bg-[#F8FAFC] px-6 py-4">
+          <div className="flex items-center justify-end gap-2 border-t border-[var(--line)] px-6 py-3.5">
             {footer}
           </div>
         )}
