@@ -14,6 +14,7 @@ import RegisterPage from './pages/auth/RegisterPage';
 import VerifyEmailPage from './pages/auth/VerifyEmailPage';
 import ForgotPasswordPage from './pages/auth/ForgotPasswordPage';
 import ResetPasswordPage from './pages/auth/ResetPasswordPage';
+import AcceptInvitePage from './pages/auth/AcceptInvitePage';
 import DashboardPage from './pages/dashboard/DashboardPage';
 import CashFlowPage from './pages/dashboard/CashFlowPage';
 import ProposalsPage from './pages/proposals/ProposalsPage';
@@ -93,6 +94,12 @@ const resetPasswordRoute = createRoute({
   getParentRoute: () => rootRoute,
   path: '/reset-password/$token',
   component: ResetPasswordPage,
+});
+
+const acceptInviteRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: '/accept-invite/$token',
+  component: AcceptInvitePage,
 });
 
 // Freelancer routes
@@ -210,6 +217,7 @@ const routeTree = rootRoute.addChildren([
   verifyEmailRoute,
   forgotPasswordRoute,
   resetPasswordRoute,
+  acceptInviteRoute,
   dashboardRoute,
   cashFlowRoute,
   proposalsRoute,
