@@ -13,6 +13,7 @@ import ClientLoginPage from './pages/auth/ClientLoginPage';
 import RegisterPage from './pages/auth/RegisterPage';
 import VerifyEmailPage from './pages/auth/VerifyEmailPage';
 import ForgotPasswordPage from './pages/auth/ForgotPasswordPage';
+import ResetPasswordPage from './pages/auth/ResetPasswordPage';
 import DashboardPage from './pages/dashboard/DashboardPage';
 import CashFlowPage from './pages/dashboard/CashFlowPage';
 import ProposalsPage from './pages/proposals/ProposalsPage';
@@ -86,6 +87,12 @@ const forgotPasswordRoute = createRoute({
   getParentRoute: () => rootRoute,
   path: '/forgot-password',
   component: ForgotPasswordPage,
+});
+
+const resetPasswordRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: '/reset-password/$token',
+  component: ResetPasswordPage,
 });
 
 // Freelancer routes
@@ -202,6 +209,7 @@ const routeTree = rootRoute.addChildren([
   registerRoute,
   verifyEmailRoute,
   forgotPasswordRoute,
+  resetPasswordRoute,
   dashboardRoute,
   cashFlowRoute,
   proposalsRoute,
