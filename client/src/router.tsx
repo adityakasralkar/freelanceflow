@@ -10,6 +10,9 @@ import { useAuthStore } from './store/authStore';
 
 import FreelancerLoginPage from './pages/auth/FreelancerLoginPage';
 import ClientLoginPage from './pages/auth/ClientLoginPage';
+import RegisterPage from './pages/auth/RegisterPage';
+import VerifyEmailPage from './pages/auth/VerifyEmailPage';
+import ForgotPasswordPage from './pages/auth/ForgotPasswordPage';
 import DashboardPage from './pages/dashboard/DashboardPage';
 import CashFlowPage from './pages/dashboard/CashFlowPage';
 import ProposalsPage from './pages/proposals/ProposalsPage';
@@ -65,6 +68,24 @@ const clientLoginRoute = createRoute({
   getParentRoute: () => rootRoute,
   path: '/client/login',
   component: ClientLoginPage,
+});
+
+const registerRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: '/register',
+  component: RegisterPage,
+});
+
+const verifyEmailRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: '/verify-email/$token',
+  component: VerifyEmailPage,
+});
+
+const forgotPasswordRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: '/forgot-password',
+  component: ForgotPasswordPage,
 });
 
 // Freelancer routes
@@ -178,6 +199,9 @@ const routeTree = rootRoute.addChildren([
   indexRoute,
   loginRoute,
   clientLoginRoute,
+  registerRoute,
+  verifyEmailRoute,
+  forgotPasswordRoute,
   dashboardRoute,
   cashFlowRoute,
   proposalsRoute,
