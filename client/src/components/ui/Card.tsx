@@ -2,7 +2,7 @@ import type { HTMLAttributes, ReactNode } from 'react';
 import { cn } from '../../utils';
 
 interface CardProps extends HTMLAttributes<HTMLDivElement> {
-  children: ReactNode;
+  children?: ReactNode;
 }
 
 export default function Card({ children, className, ...rest }: CardProps) {

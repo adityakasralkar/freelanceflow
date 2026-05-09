@@ -10,6 +10,8 @@ interface PageLayoutProps {
   actions?: ReactNode;
   breadcrumb?: { label: string }[];
   searchPlaceholder?: string;
+  searchValue?: string;
+  onSearchChange?: (value: string) => void;
   children: ReactNode;
 }
 
@@ -19,6 +21,8 @@ export default function PageLayout({
   actions,
   breadcrumb,
   searchPlaceholder,
+  searchValue,
+  onSearchChange,
   children,
 }: PageLayoutProps) {
   const user = useAuthStore((s) => s.user);
@@ -34,6 +38,8 @@ export default function PageLayout({
           actions={actions}
           breadcrumb={breadcrumb}
           searchPlaceholder={searchPlaceholder}
+          searchValue={searchValue}
+          onSearchChange={onSearchChange}
         />
         <main className="flex-1 overflow-y-auto p-6">{children}</main>
       </div>
