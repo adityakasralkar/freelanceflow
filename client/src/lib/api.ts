@@ -33,7 +33,7 @@ async function request<T>(path: string, options: RequestInit = {}): Promise<T> {
 
   const res = await fetch(`${BASE_URL}${path}`, { ...options, headers });
 
-  let body: { success?: boolean; data?: T; error?: string; details?: unknown; message?: string } | null = null;
+  let body: { success?: boolean; data?: T; error?: string; details?: unknown; message?: string } | null;
   try {
     body = await res.json();
   } catch {

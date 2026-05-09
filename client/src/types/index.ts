@@ -62,6 +62,7 @@ export interface Project {
   proposal_title?: string;
   proposal_amount?: string;
   payment_terms?: string;
+  proposal_deliverables?: string[];
 }
 
 export interface Milestone {
