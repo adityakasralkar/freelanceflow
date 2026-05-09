@@ -7,6 +7,7 @@ const {
   forgotPassword,
   resetPassword,
   getMe,
+  updateMe,
 } = require('../controllers/auth.controller');
 const { verifyToken } = require('../middleware/auth.middleware');
 const {
@@ -24,5 +25,6 @@ router.post('/resend-verification', generalAuthLimiter, resendVerification);
 router.post('/forgot-password', forgotPasswordLimiter, forgotPassword);
 router.post('/reset-password', generalAuthLimiter, resetPassword);
 router.get('/me', verifyToken, getMe);
+router.patch('/me', verifyToken, updateMe);
 
 module.exports = router;

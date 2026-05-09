@@ -1,6 +1,27 @@
 const { query } = require('../config/db');
 
-const SAFE_USER_COLUMNS = 'id, email, role, name, email_verified, created_at';
+const SAFE_USER_COLUMNS = `
+  id,
+  email,
+  role,
+  name,
+  phone,
+  location,
+  business_name,
+  gst_number,
+  gst_enabled,
+  business_address,
+  invoice_prefix,
+  default_payment_terms,
+  default_due_days,
+  upi_id,
+  bank_name,
+  account_number,
+  ifsc_code,
+  account_holder_name,
+  email_verified,
+  created_at
+`;
 
 function findByEmail(email) {
   return query('SELECT * FROM users WHERE LOWER(email) = LOWER($1)', [email]);
@@ -89,6 +110,9 @@ function setNewPassword(userId, passwordHash) {
 
 function updateUser(id, fields) {
   const keys = Object.keys(fields);
+  if (keys.length === 0) {
+    return findById(id);
+  }
   const values = Object.values(fields);
   const setClause = keys.map((k, i) => `${k} = $${i + 2}`).join(', ');
   return query(
