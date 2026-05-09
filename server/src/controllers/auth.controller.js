@@ -11,6 +11,7 @@ const {
   setVerificationToken,
   setPasswordResetToken,
   setNewPassword,
+  updateUser,
 } = require('../models/user.model');
 const { passwordSchema } = require('../utils/passwordValidator');
 const { generateToken, expiryHours } = require('../utils/tokenGenerator');
@@ -42,6 +43,24 @@ const tokenSchema = z.object({
 
 const emailSchema = z.object({
   email: z.string().email(),
+});
+
+const updateMeSchema = z.object({
+  name: z.string().min(2).max(255).optional(),
+  phone: z.string().max(50).optional(),
+  location: z.string().max(255).optional(),
+  business_name: z.string().max(255).optional(),
+  gst_number: z.string().max(100).optional(),
+  gst_enabled: z.boolean().optional(),
+  business_address: z.string().max(2000).optional(),
+  invoice_prefix: z.string().max(20).optional(),
+  default_payment_terms: z.string().max(100).optional(),
+  default_due_days: z.coerce.number().int().min(1).max(365).optional(),
+  upi_id: z.string().max(255).optional(),
+  bank_name: z.string().max(255).optional(),
+  account_number: z.string().max(100).optional(),
+  ifsc_code: z.string().max(50).optional(),
+  account_holder_name: z.string().max(255).optional(),
 });
 
 // ---------------------------------------------------------------------------
@@ -378,6 +397,38 @@ async function getMe(req, res, next) {
   }
 }
 
+// ---------------------------------------------------------------------------
+// PATCH /api/auth/me
+// ---------------------------------------------------------------------------
+async function updateMe(req, res, next) {
+  try {
+    const parsed = updateMeSchema.safeParse(req.body);
+    if (!parsed.success) return validationError(res, parsed.error);
+
+    const normalized = Object.fromEntries(
+      Object.entries(parsed.data).map(([key, value]) => [
+        key,
+        typeof value === 'string' ? value.trim() || null : value,
+      ])
+    );
+
+    const result = await updateUser(req.user.id, normalized);
+    if (result.rows.length === 0) {
+      return res
+        .status(404)
+        .json({ success: false, error: 'User not found', code: 404 });
+    }
+
+    res.json({
+      success: true,
+      data: result.rows[0],
+      message: 'Profile updated successfully',
+    });
+  } catch (err) {
+    next(err);
+  }
+}
+
 module.exports = {
   register,
   login,
@@ -386,4 +437,5 @@ module.exports = {
   forgotPassword,
   resetPassword,
   getMe,
+  updateMe,
 };

@@ -20,7 +20,7 @@ export default function AuthLayout({
   // Brand panel — left for freelancer, right for client.
   const brandPanel = (
     <div
-      className={`ff-auth-side ${clientVariant ? 'client' : ''} hidden flex-col justify-between p-14 lg:flex`}
+      className={`ff-auth-side ${clientVariant ? 'client' : ''} hidden flex-1 flex-col justify-between p-14 lg:flex`}
     >
       <div className="relative z-[1] flex items-center gap-2">
         <div className="grid h-[26px] w-[26px] place-items-center rounded-[7px] bg-[var(--green)] text-[13px] font-extrabold text-white">
