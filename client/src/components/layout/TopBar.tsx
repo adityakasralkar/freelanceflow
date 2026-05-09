@@ -11,6 +11,8 @@ interface TopBarProps {
   actions?: ReactNode;
   breadcrumb?: BreadcrumbItem[];
   searchPlaceholder?: string;
+  searchValue?: string;
+  onSearchChange?: (value: string) => void;
 }
 
 export default function TopBar({
@@ -19,6 +21,8 @@ export default function TopBar({
   actions,
   breadcrumb,
   searchPlaceholder,
+  searchValue,
+  onSearchChange,
 }: TopBarProps) {
   return (
     <header className="flex h-16 shrink-0 items-center justify-between gap-4 border-b border-[var(--line)] bg-white px-6">
@@ -59,6 +63,8 @@ export default function TopBar({
             <input
               type="text"
               placeholder={searchPlaceholder}
+              value={searchValue}
+              onChange={(e) => onSearchChange?.(e.target.value)}
               className="h-[38px] w-full rounded-[7px] border border-[var(--line-strong)] bg-white pl-9 pr-3 text-[13px] text-[var(--text)] placeholder:text-[var(--faint)] outline-none transition-colors focus:border-[var(--green)] focus:ring-2 focus:ring-[var(--green)]/15"
             />
           </div>

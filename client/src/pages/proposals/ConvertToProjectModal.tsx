@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import Modal from '../../components/ui/Modal';
 import Button from '../../components/ui/Button';
 import Input from '../../components/ui/Input';
@@ -19,25 +19,33 @@ export default function ConvertToProjectModal({
   proposal,
   onConverted,
 }: Props) {
+  if (!isOpen || !proposal) return null;
+
+  return (
+    <ConvertToProjectForm
+      key={proposal.id}
+      isOpen={isOpen}
+      onClose={onClose}
+      proposal={proposal}
+      onConverted={onConverted}
+    />
+  );
+}
+
+function ConvertToProjectForm({
+  isOpen,
+  onClose,
+  proposal,
+  onConverted,
+}: Props & { proposal: Proposal }) {
   const convert = useConvertProposalToProject();
 
-  const [title, setTitle] = useState('');
-  const [startDate, setStartDate] = useState('');
+  const [title, setTitle] = useState(proposal.title);
+  const [startDate, setStartDate] = useState(new Date().toISOString().split('T')[0]);
   const [endDate, setEndDate] = useState('');
   const [submitError, setSubmitError] = useState<string | null>(null);
 
-  // Pre-fill from proposal each time it opens.
-  useEffect(() => {
-    if (isOpen && proposal) {
-      setTitle(proposal.title);
-      setStartDate(new Date().toISOString().split('T')[0]);
-      setEndDate('');
-      setSubmitError(null);
-    }
-  }, [isOpen, proposal]);
-
   async function handleConvert() {
-    if (!proposal) return;
     setSubmitError(null);
     try {
       const project = await convert.mutateAsync({
