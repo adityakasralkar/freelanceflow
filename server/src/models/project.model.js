@@ -24,7 +24,10 @@ function getProjectById(id, freelancerId) {
   return query(
     `SELECT p.*,
             c.name AS client_name, c.email AS client_email, c.company AS client_company,
-            pr.title AS proposal_title, pr.amount AS proposal_amount, pr.payment_terms
+            pr.title AS proposal_title,
+            pr.amount AS proposal_amount,
+            pr.payment_terms,
+            pr.deliverables AS proposal_deliverables
      FROM projects p
      LEFT JOIN clients c ON c.id = p.client_id
      LEFT JOIN proposals pr ON pr.id = p.proposal_id
