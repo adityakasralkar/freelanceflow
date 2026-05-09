@@ -50,3 +50,41 @@ export function useDeleteClient() {
     onSuccess: () => qc.invalidateQueries({ queryKey: ['clients'] }),
   });
 }
+
+export interface ClientInviteStatus {
+  status: 'none' | 'pending' | 'accepted' | 'expired' | 'revoked';
+  invitation_id?: string;
+  email?: string;
+  expires_at?: string;
+  created_at?: string;
+}
+
+export function useClientInviteStatus(clientId: string | undefined) {
+  return useQuery({
+    queryKey: ['clients', 'invite', clientId],
+    queryFn: () => api.get<ClientInviteStatus>(`/clients/${clientId}/invite`),
+    enabled: !!clientId,
+  });
+}
+
+export function useSendClientInvite() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: (clientId: string) =>
+      api.post<ClientInviteStatus>(`/clients/${clientId}/invite`),
+    onSuccess: (_, clientId) => {
+      qc.invalidateQueries({ queryKey: ['clients', 'invite', clientId] });
+    },
+  });
+}
+
+export function useRevokeClientInvite() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: (clientId: string) =>
+      api.delete<unknown>(`/clients/${clientId}/invite`),
+    onSuccess: (_, clientId) => {
+      qc.invalidateQueries({ queryKey: ['clients', 'invite', clientId] });
+    },
+  });
+}

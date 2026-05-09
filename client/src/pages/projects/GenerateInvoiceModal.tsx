@@ -3,7 +3,7 @@ import { useNavigate } from '@tanstack/react-router';
 import Modal from '../../components/ui/Modal';
 import Button from '../../components/ui/Button';
 import Input from '../../components/ui/Input';
-import { useGenerateInvoiceFromMilestone } from '../../hooks/useMilestones';
+import { useGenerateInvoice } from '../../hooks/useInvoices';
 import { ApiError } from '../../lib/api';
 
 interface Props {
@@ -37,7 +37,7 @@ function GenerateInvoiceForm({
   milestoneId: string;
   onClose: () => void;
 }) {
-  const generate = useGenerateInvoiceFromMilestone();
+  const generate = useGenerateInvoice();
   const navigate = useNavigate();
   const defaults = getDefaultDates();
 
