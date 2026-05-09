@@ -5,6 +5,20 @@ export interface User {
   email: string;
   name: string;
   role: UserRole;
+  phone?: string | null;
+  location?: string | null;
+  business_name?: string | null;
+  gst_number?: string | null;
+  gst_enabled?: boolean;
+  business_address?: string | null;
+  invoice_prefix?: string | null;
+  default_payment_terms?: string | null;
+  default_due_days?: number | null;
+  upi_id?: string | null;
+  bank_name?: string | null;
+  account_number?: string | null;
+  ifsc_code?: string | null;
+  account_holder_name?: string | null;
   created_at: string;
 }
 
@@ -107,5 +121,11 @@ export interface Invoice {
   items?: InvoiceItem[];
   client_name?: string;
   client_company?: string;
+  client_email?: string;
+  client_phone?: string;
+  client_location?: string;
   project_title?: string;
+  milestone_title?: string;
+  freelancer_name?: string;
+  freelancer_email?: string;
 }
