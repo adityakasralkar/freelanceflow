@@ -3,6 +3,8 @@ const express = require('express');
 const cors = require('cors');
 const helmet = require('helmet');
 const morgan = require('morgan');
+const swaggerUi = require('swagger-ui-express');
+const swaggerSpec = require('./config/swagger');
 
 // Initialize DB connection on startup
 require('./config/db');
@@ -12,8 +14,19 @@ const errorHandler = require('./middleware/errorHandler');
 const app = express();
 const PORT = process.env.PORT || 5000;
 
-// Security headers
-app.use(helmet());
+// Security headers (CSP relaxed for Swagger UI)
+app.use(
+  helmet({
+    contentSecurityPolicy: {
+      directives: {
+        defaultSrc: ["'self'"],
+        scriptSrc: ["'self'", "'unsafe-inline'"],
+        styleSrc: ["'self'", "'unsafe-inline'"],
+        imgSrc: ["'self'", 'data:', 'https:'],
+      },
+    },
+  })
+);
 
 // CORS — allow frontend origin
 app.use(cors({ origin: process.env.CLIENT_URL }));
@@ -23,6 +36,9 @@ app.use(morgan('dev'));
 
 // Parse JSON bodies
 app.use(express.json());
+
+// Swagger UI — public, no auth required
+app.use('/api/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec, { customSiteTitle: 'FreelanceFlow API Docs' }));
 
 // Health check
 app.get('/api/health', (req, res) => {
