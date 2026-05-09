@@ -77,6 +77,9 @@ export interface Project {
   proposal_amount?: string;
   payment_terms?: string;
   proposal_deliverables?: string[];
+  freelancer_name?: string;
+  freelancer_email?: string;
+  milestones?: Milestone[];
 }
 
 export interface Milestone {
