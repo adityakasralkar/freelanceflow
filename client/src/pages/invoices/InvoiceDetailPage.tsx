@@ -44,8 +44,8 @@ export default function InvoiceDetailPage() {
   function openMailDraft() {
     if (!invoice) return;
     const subject = `Invoice ${invoice.invoice_number} from ${user?.business_name || user?.name || 'FreelanceFlow'}`;
-    const body = `Hi ${invoice.client_name || 'there'},%0D%0A%0D%0APlease find invoice ${invoice.invoice_number} for ${formatCurrency(invoice.total_amount, invoice.currency)}.%0D%0A%0D%0AProject: ${invoice.project_title || invoice.milestone_title || 'FreelanceFlow work'}%0D%0AIssue date: ${formatDate(invoice.issue_date)}%0D%0ADue date: ${formatDate(invoice.due_date)}%0D%0A%0D%0AThanks.`;
-    window.location.href = `mailto:${invoice.client_email || ''}?subject=${encodeURIComponent(subject)}&body=${body}`;
+    const body = `Hi ${invoice.client_name || 'there'},\n\nPlease find invoice ${invoice.invoice_number} for ${formatCurrency(invoice.total_amount, invoice.currency)}.\n\nProject: ${invoice.project_title || invoice.milestone_title || 'FreelanceFlow work'}\nIssue date: ${formatDate(invoice.issue_date)}\nDue date: ${formatDate(invoice.due_date)}\n\nThanks.`;
+    window.location.href = `mailto:${invoice.client_email || ''}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
   }
 
   if (isLoading) {

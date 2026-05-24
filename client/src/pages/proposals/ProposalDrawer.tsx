@@ -10,9 +10,11 @@ import {
   useProposal,
   useUpdateProposalStatus,
   useDeleteProposal,
+  useCreateProposal,
 } from '../../hooks/useProposals';
 import { formatCurrency, formatDate } from '../../utils';
 import ConvertToProjectModal from './ConvertToProjectModal';
+import EditProposalModal from './EditProposalModal';
 
 interface ProposalDrawerProps {
   proposalId: string | null;
@@ -33,9 +35,25 @@ export default function ProposalDrawer({ proposalId, onClose }: ProposalDrawerPr
 
   const updateStatus = useUpdateProposalStatus();
   const deleteProposal = useDeleteProposal();
+  const createProposal = useCreateProposal();
   const [confirmDelete, setConfirmDelete] = useState(false);
   const [confirmDecline, setConfirmDecline] = useState(false);
   const [convertOpen, setConvertOpen] = useState(false);
+  const [editOpen, setEditOpen] = useState(false);
+
+  async function handleDuplicate() {
+    if (!proposal) return;
+    await createProposal.mutateAsync({
+      client_id: proposal.client_id,
+      title: `Copy of ${proposal.title}`,
+      description: proposal.description ?? undefined,
+      amount: Number(proposal.amount),
+      valid_until: proposal.valid_until ?? undefined,
+      payment_terms: proposal.payment_terms ?? undefined,
+      deliverables: proposal.deliverables ?? [],
+    });
+    onClose();
+  }
 
   async function changeStatus(status: 'sent' | 'accepted' | 'declined') {
     if (!proposalId) return;
@@ -77,6 +95,7 @@ export default function ProposalDrawer({ proposalId, onClose }: ProposalDrawerPr
                 {proposal.status === 'draft' && (
                   <button
                     type="button"
+                    onClick={() => setEditOpen(true)}
                     className="grid h-8 w-8 place-items-center rounded-md text-[var(--muted)] transition-colors hover:bg-[#f1f3f6] hover:text-[var(--text)]"
                     title="Edit"
                   >
@@ -251,7 +270,12 @@ export default function ProposalDrawer({ proposalId, onClose }: ProposalDrawerPr
                     <div className="font-bold">Proposal declined</div>
                     You can duplicate this proposal to send a revised version.
                   </div>
-                  <Button variant="secondary" className="justify-center">
+                  <Button
+                    variant="secondary"
+                    className="justify-center"
+                    onClick={handleDuplicate}
+                    isLoading={createProposal.isPending}
+                  >
                     <Copy className="h-3.5 w-3.5" strokeWidth={1.75} />
                     Duplicate proposal
                   </Button>
@@ -297,6 +321,14 @@ export default function ProposalDrawer({ proposalId, onClose }: ProposalDrawerPr
           navigate({ to: '/projects/$projectId', params: { projectId: project.id } });
         }}
       />
+
+      {proposal && editOpen && (
+        <EditProposalModal
+          isOpen={editOpen}
+          onClose={() => setEditOpen(false)}
+          proposal={proposal}
+        />
+      )}
     </>
   );
 }

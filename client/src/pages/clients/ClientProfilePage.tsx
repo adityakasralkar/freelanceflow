@@ -224,7 +224,7 @@ export default function ClientProfilePage() {
                     variant="secondary"
                     onClick={handleSendInvite}
                     isLoading={sendInvite.isPending}
-                    disabled={!client.email}
+                    disabled={!client.email || inviteStatus?.status === 'accepted'}
                   >
                     <Send className="h-3.5 w-3.5" strokeWidth={2} />
                     {inviteStatus?.status === 'pending' ? 'Resend invite' : 'Send invite'}

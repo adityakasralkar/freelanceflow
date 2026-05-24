@@ -84,7 +84,7 @@ export default function FreelancerLoginPage() {
         Welcome back — enter your details to continue.
       </p>
 
-      <form onSubmit={handleSubmit(onSubmit)} className="mt-6 space-y-4">
+      <form onSubmit={handleSubmit(onSubmit)} noValidate className="mt-6 space-y-4">
         <Input
           label="Email"
           type="email"

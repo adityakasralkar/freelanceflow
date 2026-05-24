@@ -50,6 +50,12 @@ function GenerateInvoiceForm({
   async function handleGenerate() {
     const preset = PRESETS[presetIdx];
     setSubmitError(null);
+
+    if (issueDate && dueDate && dueDate < issueDate) {
+      setSubmitError('Due date cannot be before the issue date');
+      return;
+    }
+
     try {
       const invoice = await generate.mutateAsync({
         milestoneId,

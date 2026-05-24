@@ -287,8 +287,8 @@ function ReminderPreviewModal({
           <Button
             onClick={async () => {
               const subject = `Payment reminder for ${invoice.invoice_number}`;
-              const body = `Hi ${invoice.client_name || 'there'},%0D%0A%0D%0AThis is a quick reminder that invoice ${invoice.invoice_number} for ${formatCurrency(invoice.total_amount, invoice.currency)} was due on ${formatDate(invoice.due_date)}.%0D%0A%0D%0AProject: ${invoice.project_title || 'FreelanceFlow work'}%0D%0A%0D%0APlease let me know if you need the invoice resent or have any payment updates.%0D%0A%0D%0AThanks.`;
-              window.location.href = `mailto:${invoice.client_email || ''}?subject=${encodeURIComponent(subject)}&body=${body}`;
+              const body = `Hi ${invoice.client_name || 'there'},\n\nThis is a quick reminder that invoice ${invoice.invoice_number} for ${formatCurrency(invoice.total_amount, invoice.currency)} was due on ${formatDate(invoice.due_date)}.\n\nProject: ${invoice.project_title || 'FreelanceFlow work'}\n\nPlease let me know if you need the invoice resent or have any payment updates.\n\nThanks.`;
+              window.location.href = `mailto:${invoice.client_email || ''}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
               onClose();
             }}
           >

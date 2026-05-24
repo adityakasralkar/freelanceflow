@@ -1,5 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { z } from 'zod';
 import {
   User,
   Building2,
@@ -16,23 +18,25 @@ import type { User as UserType } from '../../types';
 /* ------------------------------------------------------------------ */
 /* Types                                                               */
 /* ------------------------------------------------------------------ */
-interface ProfileForm {
-  name: string;
-  phone: string;
-  location: string;
-  business_name: string;
-  business_address: string;
-  gst_enabled: boolean;
-  gst_number: string;
-  invoice_prefix: string;
-  default_payment_terms: string;
-  default_due_days: number;
-  upi_id: string;
-  bank_name: string;
-  account_number: string;
-  ifsc_code: string;
-  account_holder_name: string;
-}
+const profileSchema = z.object({
+  name: z.string().min(1, 'Name is required'),
+  phone: z.string().optional(),
+  location: z.string().optional(),
+  business_name: z.string().optional(),
+  business_address: z.string().optional(),
+  gst_enabled: z.boolean(),
+  gst_number: z.string().optional(),
+  invoice_prefix: z.string().optional(),
+  default_payment_terms: z.string().optional(),
+  default_due_days: z.coerce.number().int().min(1).max(365),
+  upi_id: z.string().optional(),
+  bank_name: z.string().optional(),
+  account_number: z.string().optional(),
+  ifsc_code: z.string().optional(),
+  account_holder_name: z.string().optional(),
+});
+
+type ProfileForm = z.infer<typeof profileSchema>;
 
 /* ------------------------------------------------------------------ */
 /* Tabs                                                                */
@@ -61,8 +65,8 @@ export default function SettingsPage() {
     handleSubmit,
     reset,
     watch,
-    formState: { isDirty },
-  } = useForm<ProfileForm>();
+    formState: { isDirty, errors },
+  } = useForm<ProfileForm>({ resolver: zodResolver(profileSchema) });
 
   // Populate form when user data loads
   useEffect(() => {
@@ -142,9 +146,12 @@ export default function SettingsPage() {
                 <Field label="Full Name" required>
                   <input
                     {...register('name')}
-                    className="settings-input"
+                    className={`settings-input${errors.name ? ' border-[var(--red)] focus:border-[var(--red)]' : ''}`}
                     placeholder="John Doe"
                   />
+                  {errors.name && (
+                    <p className="mt-1 text-xs text-[var(--red)]">{errors.name.message}</p>
+                  )}
                 </Field>
                 <Field label="Email">
                   <input

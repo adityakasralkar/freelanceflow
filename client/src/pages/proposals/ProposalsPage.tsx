@@ -60,6 +60,8 @@ export default function ProposalsPage() {
       title="Proposals"
       subtitle="Manage your proposal pipeline"
       searchPlaceholder="Search proposals…"
+      searchValue={search}
+      onSearchChange={setSearch}
       actions={
         <Button onClick={() => setCreateOpen(true)}>
           <Plus className="h-3.5 w-3.5" strokeWidth={2.25} /> New Proposal

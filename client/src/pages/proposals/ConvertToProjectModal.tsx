@@ -47,6 +47,12 @@ function ConvertToProjectForm({
 
   async function handleConvert() {
     setSubmitError(null);
+
+    if (startDate && endDate && endDate < startDate) {
+      setSubmitError('End date cannot be before the start date');
+      return;
+    }
+
     try {
       const project = await convert.mutateAsync({
         id: proposal.id,

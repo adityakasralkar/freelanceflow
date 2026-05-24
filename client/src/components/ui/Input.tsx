@@ -1,4 +1,4 @@
-import { forwardRef } from 'react';
+import { forwardRef, useId } from 'react';
 import type { InputHTMLAttributes, ReactNode } from 'react';
 import { cn } from '../../utils';
 
@@ -14,7 +14,8 @@ const Input = forwardRef<HTMLInputElement, InputProps>(function Input(
   { label, error, helperText, leftIcon, rightAddon, className, id, ...rest },
   ref
 ) {
-  const inputId = id || `input-${Math.random().toString(36).slice(2, 9)}`;
+  const internalId = useId();
+  const inputId = id ?? internalId;
 
   return (
     <div className="w-full">
