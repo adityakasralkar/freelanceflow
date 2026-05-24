@@ -60,6 +60,10 @@ async function complete(req, res, next) {
       return res.status(404).json({ success: false, error: 'Milestone not found', code: 404 });
     }
 
+    if (milestoneResult.rows[0].status === 'completed') {
+      return res.status(400).json({ success: false, error: 'Milestone is already completed', code: 400 });
+    }
+
     const updated = await completeMilestone(req.params.id);
     const milestone = updated.rows[0];
 

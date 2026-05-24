@@ -34,6 +34,14 @@ async function convertToProject(proposalId, freelancerId, projectData) {
     throw err;
   }
 
+  // Guard against double-conversion
+  const existing = await query('SELECT id FROM projects WHERE proposal_id = $1', [proposalId]);
+  if (existing.rows.length > 0) {
+    const err = new Error('A project already exists for this proposal');
+    err.status = 409;
+    throw err;
+  }
+
   // Create project from proposal — inherit currency
   const projectResult = await query(
     `INSERT INTO projects (proposal_id, freelancer_id, client_id, title, description, start_date, end_date, total_amount, status, currency)

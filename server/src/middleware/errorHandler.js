@@ -1,5 +1,9 @@
 function errorHandler(err, req, res, next) {
-  console.error(err.stack);
+  if (process.env.NODE_ENV !== 'production') {
+    console.error(err.stack);
+  } else {
+    console.error(`[${new Date().toISOString()}] ${err.message}`);
+  }
 
   // PostgreSQL unique violation
   if (err.code === '23505') {

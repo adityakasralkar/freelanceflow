@@ -36,7 +36,8 @@ function updateMilestone(id, data) {
 
 function completeMilestone(id) {
   return query(
-    `UPDATE milestones SET status = 'completed', completed_at = NOW() WHERE id = $1 RETURNING *`,
+    `UPDATE milestones SET status = 'completed', completed_at = NOW()
+     WHERE id = $1 AND status != 'completed' RETURNING *`,
     [id]
   );
 }
