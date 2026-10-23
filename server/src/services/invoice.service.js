@@ -104,11 +104,10 @@ async function generateFromMilestone(milestoneId, freelancerId, extraData = {}) 
 }
 
 function validateInvoiceStatusTransition(currentStatus, newStatus) {
-  const allowed = VALID_TRANSITIONS[currentStatus] || [];
-  if (!allowed.includes(newStatus)) {
-    const err = new Error(
-      `Cannot transition invoice from '${currentStatus}' to '${newStatus}'. Allowed: ${allowed.join(', ') || 'none'}`
-    );
+  // An invoice can only move forward through its lifecycle.
+  const lifecycle = ['draft', 'sent', 'overdue', 'paid'];
+  if (lifecycle.indexOf(newStatus) < lifecycle.indexOf(currentStatus)) {
+    const err = new Error(`Cannot move invoice back from '${currentStatus}' to '${newStatus}'`);
     err.status = 400;
     throw err;
   }
