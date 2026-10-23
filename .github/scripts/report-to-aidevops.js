@@ -24,21 +24,30 @@ const STEPS = {
   dependency_audit: { name: 'Security: vulnerable dependencies', severity: 'CRITICAL' },
 };
 
+// Removes terminal colour codes (e.g. "\x1b[31m") that tools add to their output.
+function stripColours(text) {
+  return text.replace(/\x1b\[[0-9;]*m/g, '');
+}
+
 function tail(file, lines = 60) {
   try {
-    return fs.readFileSync(file, 'utf8').trimEnd().split('\n').slice(-lines).join('\n');
+    const text = stripColours(fs.readFileSync(file, 'utf8')).trimEnd();
+    return text.split('\n').slice(-lines).join('\n');
   } catch {
     return '';
   }
 }
 
-// The most useful single line of a failed step's output.
+// The most useful single line of a failed step's output, most specific first:
+// a failed test title, a found secret, a vulnerability, then any error line.
 function firstErrorLine(output) {
-  const line = output
-    .split('\n')
-    .map((l) => l.trim())
-    .find((l) => /(SECRET FOUND|✕|FAIL|error|critical|high|vulnerabilit)/i.test(l));
-  return line ? line.slice(0, 300) : '';
+  const lines = output.split('\n').map((l) => l.trim()).filter(Boolean);
+  const patterns = [/^● /, /^SECRET FOUND/, /(critical|high) severity/i, /^Tests:.*failed/, /error/i];
+  for (const pattern of patterns) {
+    const line = lines.find((l) => pattern.test(l));
+    if (line) return line.replace(/^● /, 'test failed: ').slice(0, 300);
+  }
+  return '';
 }
 
 async function main() {
