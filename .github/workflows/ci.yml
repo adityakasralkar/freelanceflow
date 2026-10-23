@@ -1,0 +1,94 @@
+# CI: on every push, test, build and security-scan FreelanceFlow, then report
+# the result to the AIDevOps monitoring server. A failed check blocks the
+# push from being deployed and is reported to AIDevOps as CRITICAL.
+#
+# Runs on a self-hosted runner (label "aidevops") on the machine where
+# AIDevOps runs, so the report can reach it. Triggered only by pushes from
+# people with write access, never by pull requests from forks.
+name: CI
+
+on:
+  push:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  checks:
+    runs-on: [self-hosted, aidevops]
+    timeout-minutes: 20
+    env:
+      CI_LOG_DIR: ci-logs
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+
+      - name: Prepare log folder
+        run: mkdir -p "$CI_LOG_DIR"
+
+      - name: Install dependencies
+        id: install
+        run: |
+          set -o pipefail
+          { (cd server && npm ci) && (cd client && npm ci); } 2>&1 | tee "$CI_LOG_DIR/install.log"
+
+      - name: Server tests
+        id: server_tests
+        run: |
+          set -o pipefail
+          (cd server && npm test) 2>&1 | tee "$CI_LOG_DIR/server_tests.log"
+
+      - name: Client lint
+        id: client_lint
+        if: ${{ !cancelled() && steps.install.outcome == 'success' }}
+        run: |
+          set -o pipefail
+          (cd client && npm run lint) 2>&1 | tee "$CI_LOG_DIR/client_lint.log"
+
+      - name: Client tests
+        id: client_tests
+        if: ${{ !cancelled() && steps.install.outcome == 'success' }}
+        run: |
+          set -o pipefail
+          (cd client && npm test) 2>&1 | tee "$CI_LOG_DIR/client_tests.log"
+
+      - name: Client build
+        id: client_build
+        if: ${{ !cancelled() && steps.install.outcome == 'success' }}
+        run: |
+          set -o pipefail
+          (cd client && npm run build) 2>&1 | tee "$CI_LOG_DIR/client_build.log"
+
+      - name: "Security: secret scan"
+        id: secret_scan
+        if: ${{ !cancelled() }}
+        run: |
+          set -o pipefail
+          .github/scripts/secret-scan.sh 2>&1 | tee "$CI_LOG_DIR/secret_scan.log"
+
+      - name: "Security: vulnerable dependencies"
+        id: dependency_audit
+        if: ${{ !cancelled() && steps.install.outcome == 'success' }}
+        run: |
+          set -o pipefail
+          { (cd server && npm audit --omit=dev --audit-level=high) && (cd client && npm audit --omit=dev --audit-level=high); } 2>&1 | tee "$CI_LOG_DIR/dependency_audit.log"
+
+      - name: Report to AIDevOps
+        if: ${{ always() }}
+        env:
+          AIDEVOPS_URL: ${{ secrets.AIDEVOPS_URL }}
+          AIDEVOPS_API_KEY: ${{ secrets.AIDEVOPS_API_KEY }}
+          STEPS_JSON: ${{ toJSON(steps) }}
+          COMMIT_MESSAGE: ${{ github.event.head_commit.message }}
+        run: node .github/scripts/report-to-aidevops.js
