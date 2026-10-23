@@ -36,7 +36,9 @@ const profileSchema = z.object({
   account_holder_name: z.string().optional(),
 });
 
-type ProfileForm = z.infer<typeof profileSchema>;
+// The form holds raw input (default_due_days may be text); zod turns it into the output type.
+type ProfileFormInput = z.input<typeof profileSchema>;
+type ProfileForm = z.output<typeof profileSchema>;
 
 /* ------------------------------------------------------------------ */
 /* Tabs                                                                */
@@ -66,7 +68,7 @@ export default function SettingsPage() {
     reset,
     watch,
     formState: { isDirty, errors },
-  } = useForm<ProfileForm>({ resolver: zodResolver(profileSchema) });
+  } = useForm<ProfileFormInput, unknown, ProfileForm>({ resolver: zodResolver(profileSchema) });
 
   // Populate form when user data loads
   useEffect(() => {
