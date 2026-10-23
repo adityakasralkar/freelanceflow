@@ -29,20 +29,23 @@ function stripColours(text) {
   return text.replace(/\x1b\[[0-9;]*m/g, '');
 }
 
-function tail(file, lines = 60) {
+function readLog(file) {
   try {
-    const text = stripColours(fs.readFileSync(file, 'utf8')).trimEnd();
-    return text.split('\n').slice(-lines).join('\n');
+    return stripColours(fs.readFileSync(file, 'utf8')).trimEnd();
   } catch {
     return '';
   }
+}
+
+function tail(text, lines = 80) {
+  return text.split('\n').slice(-lines).join('\n');
 }
 
 // The most useful single line of a failed step's output, most specific first:
 // a failed test title, a found secret, a vulnerability, then any error line.
 function firstErrorLine(output) {
   const lines = output.split('\n').map((l) => l.trim()).filter(Boolean);
-  const patterns = [/^● /, /^SECRET FOUND/, /(critical|high) severity/i, /^Tests:.*failed/, /error/i];
+  const patterns = [/^● .+ › /, /^SECRET FOUND/, /(critical|high) severity/i, /^Tests:.*failed/, /error/i];
   for (const pattern of patterns) {
     const line = lines.find((l) => pattern.test(l));
     if (line) return line.replace(/^● /, 'test failed: ').slice(0, 300);
@@ -79,8 +82,9 @@ async function main() {
 
   const logs = failed.length
     ? failed.map((step) => {
-        const output = tail(path.join(logDir, `${step.id}.log`));
-        const detail = firstErrorLine(output);
+        const full = readLog(path.join(logDir, `${step.id}.log`));
+        const detail = firstErrorLine(full);
+        const output = tail(full);
         return {
           service_name: 'freelanceflow-ci',
           severity: step.severity,
