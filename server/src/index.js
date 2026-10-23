@@ -1,4 +1,6 @@
 require('dotenv').config();
+// Monitoring must start before express and pg are loaded.
+require('./otel');
 const express = require('express');
 const cors = require('cors');
 const helmet = require('helmet');

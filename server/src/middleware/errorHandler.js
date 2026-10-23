@@ -1,4 +1,15 @@
+const { reportError } = require('../otel');
+
+// Status code that will be sent for this error (PostgreSQL codes are mapped).
+function statusFor(err) {
+  if (err.code === '23505') return 409;
+  if (err.code === '23503') return 400;
+  return err.status || 500;
+}
+
 function errorHandler(err, req, res, next) {
+  reportError(err, req, statusFor(err));
+
   if (process.env.NODE_ENV !== 'production') {
     console.error(err.stack);
   } else {
