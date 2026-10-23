@@ -67,7 +67,7 @@ export default function Drawer({
             <button
               type="button"
               onClick={onClose}
-              className="grid h-8 w-8 place-items-center rounded-md text-[var(--muted)] transition-colors hover:bg-[#f1f3f6] hover:text-[var(--text)]"
+              className="grid h-8 w-8 place-items-center rounded-md text-[var(--muted)] transition-colors hover:bg-[var(--panel-soft)] hover:text-[var(--text)]"
               aria-label="Close"
             >
               <X className="h-5 w-5" strokeWidth={1.5} />

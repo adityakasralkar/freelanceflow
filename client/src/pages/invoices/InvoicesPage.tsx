@@ -123,7 +123,7 @@ export default function InvoicesPage() {
                         'rounded-full px-1.5 text-[11px] font-semibold',
                         active
                           ? 'bg-[var(--green-soft)] text-[var(--green-dark)]'
-                          : 'bg-[#eef0f3] text-[var(--muted)]'
+                          : 'bg-[#eef1ef] text-[var(--muted)]'
                       )}
                     >
                       {counts[item.key]}
@@ -203,7 +203,7 @@ function InvoiceRow({
   const isOverdue = invoice.status === 'overdue';
 
   return (
-    <tr className="group border-b border-[var(--line)] transition-colors hover:bg-[#fafbfc] last:border-b-0">
+    <tr className="group border-b border-[var(--line)] transition-colors hover:bg-[var(--panel-soft)] last:border-b-0">
       <td className="px-4 py-3.5">
         <Link
           to="/invoices/$invoiceId"

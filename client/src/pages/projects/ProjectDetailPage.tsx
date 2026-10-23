@@ -244,7 +244,7 @@ export default function ProjectDetailPage() {
                     <span className="text-[12px] text-[var(--muted)]">Progress</span>
                     <span className="text-[13px] font-bold">{percent}%</span>
                   </div>
-                  <div className="h-1.5 overflow-hidden rounded-full bg-[#eef0f3]">
+                  <div className="h-1.5 overflow-hidden rounded-full bg-[#eef1ef]">
                     <div
                       className="h-full rounded-full bg-[var(--green)]"
                       style={{ width: `${percent}%` }}
@@ -382,7 +382,7 @@ function countCls(active: boolean) {
     'rounded-full px-1.5 text-[11px] font-semibold',
     active
       ? 'bg-[var(--green-soft)] text-[var(--green-dark)]'
-      : 'bg-[#eef0f3] text-[var(--muted)]'
+      : 'bg-[#eef1ef] text-[var(--muted)]'
   );
 }
 

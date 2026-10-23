@@ -37,11 +37,11 @@ const Input = forwardRef<HTMLInputElement, InputProps>(function Input(
           id={inputId}
           ref={ref}
           className={cn(
-            'h-[38px] w-full rounded-[7px] border bg-white px-3 text-[13px] text-[var(--text)] outline-none transition-colors font-[Inter]',
+            'h-[42px] w-full rounded-[11px] border bg-[var(--panel-soft)] px-3.5 text-[13.5px] text-[var(--text)] outline-none transition-all font-[Inter]',
             'placeholder:text-[var(--faint)]',
-            'focus:ring-2 focus:ring-[var(--green)]/15',
+            'focus:bg-white focus:ring-4 focus:ring-[var(--green)]/10',
             error
-              ? 'border-[var(--red)] focus:border-[var(--red)] focus:ring-[var(--red)]/20'
+              ? 'border-[var(--red)] focus:border-[var(--red)] focus:ring-[var(--red)]/10'
               : 'border-[var(--line-strong)] focus:border-[var(--green)]',
             leftIcon && 'pl-10',
             rightAddon && 'pr-12',

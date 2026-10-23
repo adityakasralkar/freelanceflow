@@ -70,18 +70,20 @@ export default function FreelancerLoginPage() {
 
   return (
     <AuthLayout
-      heading="Your freelance business, organized."
-      subheading="Track proposals, manage projects, send invoices — all in one place."
+      heading="From proposal to payment,"
+      headingCursive="effortlessly"
+      subheading="One calm workspace for proposals, milestones, invoices, and cash flow."
       features={[
-        'Send polished proposals in minutes',
-        'Convert accepted proposals to projects',
-        'Auto-generate invoices from completed milestones',
-        'See cash flow at a glance',
+        'Proposal pipeline',
+        'Milestone tracking',
+        'Real-time cash flow',
       ]}
     >
-      <h2 className="text-2xl font-semibold tracking-tight text-[#111827]">Sign in</h2>
-      <p className="mt-1 text-sm text-[#667085]">
-        Welcome back — enter your details to continue.
+      <h2 className="text-[26px] font-extrabold tracking-[-0.02em] text-[var(--text)]">
+        Welcome back
+      </h2>
+      <p className="mt-1.5 text-sm text-[var(--muted)]">
+        Sign in to your freelancer workspace
       </p>
 
       <form onSubmit={handleSubmit(onSubmit)} noValidate className="mt-6 space-y-4">
@@ -107,20 +109,20 @@ export default function FreelancerLoginPage() {
         <div className="flex justify-end">
           <Link
             to="/forgot-password"
-            className="text-xs font-medium text-[#0F9F72] hover:text-[#087252]"
+            className="text-xs font-medium text-[var(--green)] hover:text-[var(--green-dark)]"
           >
             Forgot password?
           </Link>
         </div>
 
         {submitError && (
-          <div className="rounded-lg border border-[#FECACA] bg-[#FEF2F2] px-3 py-2 text-sm text-[#DC2626]">
+          <div className="rounded-lg border border-[#FECACA] bg-[var(--red-soft)] px-3 py-2 text-sm text-[var(--red)]">
             {submitError}
           </div>
         )}
 
         {unverifiedEmail && (
-          <div className="rounded-lg border border-[#FDE68A] bg-[#FFF7ED] px-3 py-3 text-sm text-[#D97706]">
+          <div className="rounded-lg border border-[#FDE68A] bg-[var(--amber-soft)] px-3 py-3 text-sm text-[var(--amber)]">
             <p className="font-medium">Please verify your email before logging in.</p>
             <p className="mt-1 text-xs text-[#92400E]">
               We sent a verification link to{' '}
@@ -130,7 +132,7 @@ export default function FreelancerLoginPage() {
               type="button"
               onClick={handleResend}
               disabled={isResending}
-              className="mt-2 text-xs font-semibold text-[#D97706] underline-offset-2 hover:underline disabled:opacity-60"
+              className="mt-2 text-xs font-semibold text-[var(--amber)] underline-offset-2 hover:underline disabled:opacity-60"
             >
               {isResending ? 'Sending…' : 'Resend verification email'}
             </button>
@@ -145,18 +147,18 @@ export default function FreelancerLoginPage() {
         </Button>
       </form>
 
-      <div className="mt-6 text-center text-sm text-[#667085]">
+      <div className="mt-6 text-center text-sm text-[var(--muted)]">
         Don't have an account?{' '}
-        <Link to="/register" className="font-medium text-[#0F9F72] hover:text-[#087252]">
+        <Link to="/register" className="font-medium text-[var(--green)] hover:text-[var(--green-dark)]">
           Sign up →
         </Link>
       </div>
 
-      <div className="mt-8 border-t border-[#E5E9F0] pt-4 text-center text-sm text-[#667085]">
+      <div className="mt-8 border-t border-[var(--line)] pt-4 text-center text-sm text-[var(--muted)]">
         Are you a client?{' '}
         <Link
           to="/client/login"
-          className="font-medium text-[#0F9F72] hover:text-[#087252]"
+          className="font-medium text-[var(--green)] hover:text-[var(--green-dark)]"
         >
           Client login →
         </Link>

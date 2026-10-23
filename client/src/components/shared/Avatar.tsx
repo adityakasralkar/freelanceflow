@@ -16,11 +16,11 @@ const SIZE_PX: Record<Size, string> = {
 };
 
 const PALETTE = [
-  { bg: '#EAF8F2', text: '#0F9F72' },
-  { bg: '#EFF6FF', text: '#2563EB' },
-  { bg: '#F5F3FF', text: '#7C3AED' },
-  { bg: '#FFF7ED', text: '#D97706' },
-  { bg: '#FEF2F2', text: '#DC2626' },
+  { bg: 'var(--green-soft)', text: 'var(--green)' },
+  { bg: 'var(--blue-soft)', text: 'var(--blue)' },
+  { bg: '#F5F3FF', text: 'var(--purple)' },
+  { bg: 'var(--amber-soft)', text: 'var(--amber)' },
+  { bg: 'var(--red-soft)', text: 'var(--red)' },
 ];
 
 export default function Avatar({ name, size = 'md', className }: AvatarProps) {

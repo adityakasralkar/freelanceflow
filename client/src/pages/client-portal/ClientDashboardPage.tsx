@@ -90,7 +90,7 @@ export default function ClientDashboardPage() {
                   key={project.id}
                   to="/client/projects/$projectId"
                   params={{ projectId: project.id }}
-                  className="block px-5 py-4 transition-colors hover:bg-[#fafbfc]"
+                  className="block px-5 py-4 transition-colors hover:bg-[var(--panel-soft)]"
                 >
                   <div className="flex items-start justify-between gap-3">
                     <div className="min-w-0">
@@ -149,7 +149,7 @@ export default function ClientDashboardPage() {
                     key={invoice.id}
                     to="/client/invoices/$invoiceId"
                     params={{ invoiceId: invoice.id }}
-                    className="flex items-center justify-between gap-3 px-5 py-3.5 transition-colors hover:bg-[#fafbfc]"
+                    className="flex items-center justify-between gap-3 px-5 py-3.5 transition-colors hover:bg-[var(--panel-soft)]"
                   >
                     <div className="min-w-0">
                       <div className="mono text-[13px] font-semibold text-[var(--green-dark)]">

@@ -8,6 +8,10 @@ import {
 import type { UserRole } from './types';
 import { useAuthStore } from './store/authStore';
 
+import LandingPage from './pages/marketing/LandingPage';
+import WorkflowPage from './pages/marketing/WorkflowPage';
+import PricingPage from './pages/marketing/PricingPage';
+import DocsPage from './pages/marketing/DocsPage';
 import FreelancerLoginPage from './pages/auth/FreelancerLoginPage';
 import ClientLoginPage from './pages/auth/ClientLoginPage';
 import RegisterPage from './pages/auth/RegisterPage';
@@ -55,9 +59,32 @@ const indexRoute = createRoute({
   getParentRoute: () => rootRoute,
   path: '/',
   beforeLoad: () => {
-    throw redirect({ to: '/login' });
+    const state = useAuthStore.getState();
+    if (state.isAuthenticated && state.user) {
+      throw redirect({
+        to: state.user.role === 'client' ? '/client/dashboard' : '/dashboard',
+      });
+    }
   },
-  component: () => null,
+  component: LandingPage,
+});
+
+const workflowRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: '/workflow',
+  component: WorkflowPage,
+});
+
+const pricingRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: '/pricing',
+  component: PricingPage,
+});
+
+const docsRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: '/docs',
+  component: DocsPage,
 });
 
 const loginRoute = createRoute({
@@ -211,6 +238,9 @@ const clientInvoiceDetailRoute = createRoute({
 
 const routeTree = rootRoute.addChildren([
   indexRoute,
+  workflowRoute,
+  pricingRoute,
+  docsRoute,
   loginRoute,
   clientLoginRoute,
   registerRoute,

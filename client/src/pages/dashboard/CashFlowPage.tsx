@@ -25,21 +25,21 @@ import EmptyState from '../../components/shared/EmptyState';
 import { useCashFlow } from '../../hooks/useCashFlow';
 import { formatCurrency } from '../../utils';
 
-const DONUT_COLORS = ['#0F9F72', '#2563EB', '#7C3AED', '#D97706', '#DC2626', '#0EA5E9'];
+const DONUT_COLORS = ['var(--green)', 'var(--blue)', 'var(--purple)', 'var(--amber)', 'var(--red)', '#0EA5E9'];
 
 const SkeletonStat = () => (
   <Card className="p-5">
-    <div className="h-9 w-9 animate-pulse rounded-lg bg-[#F3F6FA]" />
-    <div className="mt-3 h-3 w-24 animate-pulse rounded bg-[#F3F6FA]" />
-    <div className="mt-2 h-7 w-32 animate-pulse rounded bg-[#F3F6FA]" />
+    <div className="h-9 w-9 animate-pulse rounded-lg bg-[var(--surface2)]" />
+    <div className="mt-3 h-3 w-24 animate-pulse rounded bg-[var(--surface2)]" />
+    <div className="mt-2 h-7 w-32 animate-pulse rounded bg-[var(--surface2)]" />
   </Card>
 );
 
 const SkeletonCard = ({ height }: { height: number }) => (
   <Card className="p-5">
-    <div className="h-3 w-32 animate-pulse rounded bg-[#F3F6FA]" />
+    <div className="h-3 w-32 animate-pulse rounded bg-[var(--surface2)]" />
     <div
-      className="mt-4 animate-pulse rounded bg-[#F3F6FA]"
+      className="mt-4 animate-pulse rounded bg-[var(--surface2)]"
       style={{ height: `${height}px` }}
     />
   </Card>
@@ -65,37 +65,37 @@ export default function CashFlowPage() {
         ) : (
           <>
             <StatCard
+              hero
               icon={TrendingUp}
               label="Total earned"
               value={formatCurrency(cf.totalEarned, cf.currency)}
-              iconColor={{ bg: '#EAF8F2', fg: '#0F9F72' }}
             />
             <StatCard
               icon={Clock}
               label="Pending"
               value={formatCurrency(cf.pending, cf.currency)}
-              iconColor={{ bg: '#FFF7ED', fg: '#D97706' }}
+              tone="amber"
             />
             <StatCard
               icon={AlertTriangle}
               label="Overdue"
               value={formatCurrency(cf.overdue, cf.currency)}
-              iconColor={{ bg: '#FEF2F2', fg: '#DC2626' }}
+              tone="red"
             />
             <StatCard
               icon={CalendarClock}
               label="Projected (next 30 days)"
               value={formatCurrency(cf.projected, cf.currency)}
-              iconColor={{ bg: '#EFF6FF', fg: '#2563EB' }}
+              tone="blue"
             />
           </>
         )}
       </div>
 
       {cf.hasMixedCurrencies && (
-        <p className="mt-2 text-xs text-[#98A2B3]">
+        <p className="mt-2 text-xs text-[var(--faint)]">
           Multiple currencies detected — totals shown in{' '}
-          <span className="font-medium text-[#667085]">{cf.currency}</span> are not
+          <span className="font-medium text-[var(--muted)]">{cf.currency}</span> are not
           converted across currencies.
         </p>
       )}
@@ -107,22 +107,22 @@ export default function CashFlowPage() {
         ) : (
           <Card className="p-5">
             <div className="flex items-center justify-between">
-              <h3 className="text-sm font-semibold text-[#111827]">
+              <h3 className="text-sm font-semibold text-[var(--text)]">
                 Monthly revenue · last 6 months
               </h3>
             </div>
             <div className="mt-4 h-72">
               <ResponsiveContainer width="100%" height="100%">
                 <BarChart data={cf.monthly} margin={{ top: 8, right: 8, left: -8, bottom: 0 }}>
-                  <CartesianGrid stroke="#E5E9F0" vertical={false} />
+                  <CartesianGrid stroke="var(--line)" vertical={false} />
                   <XAxis
                     dataKey="label"
-                    tick={{ fontSize: 12, fill: '#667085' }}
-                    axisLine={{ stroke: '#E5E9F0' }}
+                    tick={{ fontSize: 12, fill: 'var(--muted)' }}
+                    axisLine={{ stroke: 'var(--line)' }}
                     tickLine={false}
                   />
                   <YAxis
-                    tick={{ fontSize: 12, fill: '#667085' }}
+                    tick={{ fontSize: 12, fill: 'var(--muted)' }}
                     axisLine={false}
                     tickLine={false}
                     tickFormatter={(v) =>
@@ -132,15 +132,15 @@ export default function CashFlowPage() {
                   <Tooltip
                     contentStyle={{
                       borderRadius: '8px',
-                      border: '1px solid #E5E9F0',
+                      border: '1px solid var(--line)',
                       fontSize: '12px',
                     }}
                     formatter={(v) => formatCurrency(Number(v), cf.currency)}
                   />
                   <Legend wrapperStyle={{ fontSize: '12px' }} iconType="circle" />
-                  <Bar dataKey="earned" name="Earned" fill="#0F9F72" radius={[4, 4, 0, 0]} />
-                  <Bar dataKey="pending" name="Pending" fill="#D97706" radius={[4, 4, 0, 0]} />
-                  <Bar dataKey="overdue" name="Overdue" fill="#DC2626" radius={[4, 4, 0, 0]} />
+                  <Bar dataKey="earned" name="Earned" fill="var(--green)" radius={[4, 4, 0, 0]} />
+                  <Bar dataKey="pending" name="Pending" fill="var(--amber)" radius={[4, 4, 0, 0]} />
+                  <Bar dataKey="overdue" name="Overdue" fill="var(--red)" radius={[4, 4, 0, 0]} />
                 </BarChart>
               </ResponsiveContainer>
             </div>
@@ -158,7 +158,7 @@ export default function CashFlowPage() {
         ) : (
           <>
             <Card className="p-5">
-              <h3 className="text-sm font-semibold text-[#111827]">Income by client</h3>
+              <h3 className="text-sm font-semibold text-[var(--text)]">Income by client</h3>
 
               {cf.byClient.length === 0 ? (
                 <div className="py-6">
@@ -193,7 +193,7 @@ export default function CashFlowPage() {
                         <Tooltip
                           contentStyle={{
                             borderRadius: '8px',
-                            border: '1px solid #E5E9F0',
+                            border: '1px solid var(--line)',
                             fontSize: '12px',
                           }}
                           formatter={(v) => formatCurrency(Number(v), cf.currency)}
@@ -209,10 +209,10 @@ export default function CashFlowPage() {
                           className="h-2 w-2 shrink-0 rounded-full"
                           style={{ backgroundColor: DONUT_COLORS[idx % DONUT_COLORS.length] }}
                         />
-                        <span className="min-w-0 flex-1 truncate text-[#111827]">
+                        <span className="min-w-0 flex-1 truncate text-[var(--text)]">
                           {c.client_name}
                         </span>
-                        <span className="shrink-0 text-xs font-medium text-[#667085]">
+                        <span className="shrink-0 text-xs font-medium text-[var(--muted)]">
                           {c.percent.toFixed(0)}%
                         </span>
                       </li>
@@ -223,7 +223,7 @@ export default function CashFlowPage() {
             </Card>
 
             <Card className="p-5">
-              <h3 className="text-sm font-semibold text-[#111827]">Invoice aging</h3>
+              <h3 className="text-sm font-semibold text-[var(--text)]">Invoice aging</h3>
               {cf.aging.every((b) => b.amount === 0) ? (
                 <div className="py-6">
                   <EmptyState
@@ -240,21 +240,21 @@ export default function CashFlowPage() {
                     return (
                       <div key={bucket.label}>
                         <div className="flex items-center justify-between text-xs">
-                          <span className="font-medium text-[#667085]">
+                          <span className="font-medium text-[var(--muted)]">
                             {bucket.label}
                           </span>
-                          <span className="font-mono text-[#111827]">
+                          <span className="font-mono text-[var(--text)]">
                             {formatCurrency(bucket.amount, cf.currency)}
                             {bucket.count > 0 && (
-                              <span className="ml-1 text-[#98A2B3]">
+                              <span className="ml-1 text-[var(--faint)]">
                                 · {bucket.count} inv
                               </span>
                             )}
                           </span>
                         </div>
-                        <div className="mt-1 h-1.5 overflow-hidden rounded-full bg-[#F3F6FA]">
+                        <div className="mt-1 h-1.5 overflow-hidden rounded-full bg-[var(--surface2)]">
                           <div
-                            className="h-full rounded-full bg-[#D97706] transition-[width]"
+                            className="h-full rounded-full bg-[var(--amber)] transition-[width]"
                             style={{ width: `${widthPct}%` }}
                           />
                         </div>

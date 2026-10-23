@@ -89,9 +89,9 @@ export default function ResetPasswordPage() {
     return (
       <AuthLayout heading="Welcome back" features={FEATURES}>
         <div className="flex flex-col items-center text-center">
-          <CheckCircle2 className="h-10 w-10 text-[#0F9F72]" strokeWidth={1.5} />
-          <h2 className="mt-4 text-xl font-semibold text-[#111827]">Password updated</h2>
-          <p className="mt-1 text-sm text-[#667085]">
+          <CheckCircle2 className="h-10 w-10 text-[var(--green)]" strokeWidth={1.5} />
+          <h2 className="mt-4 text-xl font-semibold text-[var(--text)]">Password updated</h2>
+          <p className="mt-1 text-sm text-[var(--muted)]">
             Redirecting you to your dashboard…
           </p>
         </div>
@@ -105,13 +105,13 @@ export default function ResetPasswordPage() {
   if (tokenInvalid) {
     return (
       <AuthLayout heading="Reset your password" features={FEATURES}>
-        <div className="flex h-12 w-12 items-center justify-center rounded-full bg-[#FEF2F2]">
-          <XCircle className="h-6 w-6 text-[#DC2626]" strokeWidth={1.5} />
+        <div className="flex h-12 w-12 items-center justify-center rounded-full bg-[var(--red-soft)]">
+          <XCircle className="h-6 w-6 text-[var(--red)]" strokeWidth={1.5} />
         </div>
-        <h2 className="mt-4 text-xl font-semibold text-[#111827]">
+        <h2 className="mt-4 text-xl font-semibold text-[var(--text)]">
           Reset link no longer valid
         </h2>
-        <p className="mt-1 text-sm text-[#667085]">{tokenInvalid.message}</p>
+        <p className="mt-1 text-sm text-[var(--muted)]">{tokenInvalid.message}</p>
 
         <div className="mt-6 flex flex-col gap-2">
           <Link to="/forgot-password">
@@ -119,7 +119,7 @@ export default function ResetPasswordPage() {
           </Link>
           <Link
             to="/login"
-            className="inline-flex h-10 items-center justify-center rounded-lg border border-[#E5E9F0] bg-white px-4 text-sm font-medium text-[#111827] transition-colors hover:bg-[#F8FAFC]"
+            className="inline-flex h-10 items-center justify-center rounded-lg border border-[var(--line)] bg-white px-4 text-sm font-medium text-[var(--text)] transition-colors hover:bg-[var(--panel-soft)]"
           >
             Back to sign in
           </Link>
@@ -133,10 +133,10 @@ export default function ResetPasswordPage() {
   // ---------------------------------------------------------------------------
   return (
     <AuthLayout heading="Reset your password" features={FEATURES}>
-      <h2 className="text-2xl font-semibold tracking-tight text-[#111827]">
+      <h2 className="text-2xl font-semibold tracking-tight text-[var(--text)]">
         Set a new password
       </h2>
-      <p className="mt-1 text-sm text-[#667085]">
+      <p className="mt-1 text-sm text-[var(--muted)]">
         Choose a strong password you don't use elsewhere.
       </p>
 
@@ -162,7 +162,7 @@ export default function ResetPasswordPage() {
         />
 
         {submitError && (
-          <div className="rounded-lg border border-[#FECACA] bg-[#FEF2F2] px-3 py-2 text-sm text-[#DC2626]">
+          <div className="rounded-lg border border-[#FECACA] bg-[var(--red-soft)] px-3 py-2 text-sm text-[var(--red)]">
             {submitError}
           </div>
         )}
@@ -172,8 +172,8 @@ export default function ResetPasswordPage() {
         </Button>
       </form>
 
-      <div className="mt-8 border-t border-[#E5E9F0] pt-4 text-center text-sm text-[#667085]">
-        <Link to="/login" className="font-medium text-[#0F9F72] hover:text-[#087252]">
+      <div className="mt-8 border-t border-[var(--line)] pt-4 text-center text-sm text-[var(--muted)]">
+        <Link to="/login" className="font-medium text-[var(--green)] hover:text-[var(--green-dark)]">
           ← Back to sign in
         </Link>
       </div>

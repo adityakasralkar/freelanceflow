@@ -96,7 +96,7 @@ export default function ProposalDrawer({ proposalId, onClose }: ProposalDrawerPr
                   <button
                     type="button"
                     onClick={() => setEditOpen(true)}
-                    className="grid h-8 w-8 place-items-center rounded-md text-[var(--muted)] transition-colors hover:bg-[#f1f3f6] hover:text-[var(--text)]"
+                    className="grid h-8 w-8 place-items-center rounded-md text-[var(--muted)] transition-colors hover:bg-[var(--panel-soft)] hover:text-[var(--text)]"
                     title="Edit"
                   >
                     <Edit3 className="h-4 w-4" strokeWidth={1.5} />
@@ -115,7 +115,7 @@ export default function ProposalDrawer({ proposalId, onClose }: ProposalDrawerPr
                 <button
                   type="button"
                   onClick={onClose}
-                  className="grid h-8 w-8 place-items-center rounded-md text-[var(--muted)] transition-colors hover:bg-[#f1f3f6] hover:text-[var(--text)]"
+                  className="grid h-8 w-8 place-items-center rounded-md text-[var(--muted)] transition-colors hover:bg-[var(--panel-soft)] hover:text-[var(--text)]"
                   title="Close"
                 >
                   <X className="h-4 w-4" strokeWidth={1.5} />

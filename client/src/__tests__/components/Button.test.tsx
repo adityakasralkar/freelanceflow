@@ -11,7 +11,7 @@ describe('Button component', () => {
   it('applies primary variant styles by default', () => {
     render(<Button>Primary</Button>);
     const btn = screen.getByRole('button');
-    expect(btn.className).toContain('bg-[var(--green)]');
+    expect(btn.className).toContain('bg-[linear-gradient(140deg,var(--green-bright),var(--green-dark))]');
   });
 
   it('applies secondary variant styles', () => {
@@ -62,13 +62,13 @@ describe('Button component', () => {
   it('applies sm size styles', () => {
     render(<Button size="sm">Small</Button>);
     const btn = screen.getByRole('button');
-    expect(btn.className).toContain('h-[30px]');
+    expect(btn.className).toContain('h-8');
   });
 
   it('applies lg size styles', () => {
     render(<Button size="lg">Large</Button>);
     const btn = screen.getByRole('button');
-    expect(btn.className).toContain('h-11');
+    expect(btn.className).toContain('h-[46px]');
   });
 
   it('defaults to type="button" to prevent form submission', () => {

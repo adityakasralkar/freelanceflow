@@ -64,7 +64,7 @@ export default function ProjectsPage() {
     >
       {/* Tab pills */}
       <div className="mb-4 flex items-center gap-2">
-        <div className="inline-flex gap-0.5 rounded-lg bg-[#f1f3f6] p-[3px]">
+        <div className="inline-flex gap-0.5 rounded-lg bg-[var(--panel-soft)] p-[3px]">
           {TABS.map((t) => (
             <button
               key={t.key}
@@ -82,7 +82,7 @@ export default function ProjectsPage() {
                   'ml-1.5 rounded-full px-1.5 text-[11px] font-semibold',
                   tab === t.key
                     ? 'bg-[var(--green-soft)] text-[var(--green-dark)]'
-                    : 'bg-[#eef0f3] text-[var(--muted)]'
+                    : 'bg-[#eef1ef] text-[var(--muted)]'
                 )}
               >
                 {counts[t.key]}
@@ -95,7 +95,7 @@ export default function ProjectsPage() {
       {isLoading ? (
         <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
           {[0, 1, 2, 3, 4, 5].map((i) => (
-            <Card key={i} className="h-[180px] animate-pulse bg-[#f3f6fa]" />
+            <Card key={i} className="h-[180px] animate-pulse bg-[var(--surface2)]" />
           ))}
         </div>
       ) : filtered.length === 0 ? (
@@ -177,7 +177,7 @@ function ProjectCard({ project }: { project: Project }) {
             </span>
             <span className="font-bold text-[var(--text)]">{percent}%</span>
           </div>
-          <div className="mt-1.5 h-1.5 overflow-hidden rounded-full bg-[#eef0f3]">
+          <div className="mt-1.5 h-1.5 overflow-hidden rounded-full bg-[#eef1ef]">
             <div
               className={cn(
                 'h-full rounded-full transition-[width]',

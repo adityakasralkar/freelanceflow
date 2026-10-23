@@ -55,7 +55,7 @@ const STATUS_LABEL: Record<BadgeStatus, string> = {
 };
 
 const TONE_STYLES: Record<Tone, { bg: string; color: string }> = {
-  gray:   { bg: '#f1f3f6',          color: '#475467'           },
+  gray:   { bg: '#eef1ef',          color: '#5b6b64'           },
   blue:   { bg: 'var(--blue-soft)',  color: 'var(--blue)'       },
   green:  { bg: 'var(--green-soft)', color: 'var(--green-dark)' },
   amber:  { bg: 'var(--amber-soft)', color: 'var(--amber)'      },
@@ -69,12 +69,12 @@ export default function Badge({ status, className }: BadgeProps) {
   return (
     <span
       className={cn(
-        'inline-flex items-center gap-1.5 h-[22px] rounded-full px-2 text-[11px] font-semibold whitespace-nowrap',
+        'inline-flex items-center gap-1.5 h-6 rounded-full px-2.5 text-[11.5px] font-semibold whitespace-nowrap',
         className
       )}
       style={{ backgroundColor: style.bg, color: style.color }}
     >
-      <span className="h-1 w-1 rounded-full" style={{ backgroundColor: 'currentColor' }} />
+      <span className="h-1.5 w-1.5 rounded-full" style={{ backgroundColor: 'currentColor' }} />
       {STATUS_LABEL[status]}
     </span>
   );

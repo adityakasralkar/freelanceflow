@@ -121,7 +121,7 @@ export default function ClientProjectDetailPage() {
             <div className="mt-3 text-[34px] font-bold tracking-[-0.02em] text-[var(--text)]">
               {summary.percent}%
             </div>
-            <div className="mt-3 h-2 overflow-hidden rounded-full bg-[#eef0f3]">
+            <div className="mt-3 h-2 overflow-hidden rounded-full bg-[#eef1ef]">
               <div
                 className="h-full rounded-full bg-[var(--green)]"
                 style={{ width: `${summary.percent}%` }}

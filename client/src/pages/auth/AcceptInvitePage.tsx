@@ -138,11 +138,11 @@ export default function AcceptInvitePage() {
     return (
       <AuthLayout heading="Welcome aboard" features={FEATURES}>
         <div className="flex flex-col items-center text-center">
-          <CheckCircle2 className="h-10 w-10 text-[#0F9F72]" strokeWidth={1.5} />
-          <h2 className="mt-4 text-xl font-semibold text-[#111827]">
+          <CheckCircle2 className="h-10 w-10 text-[var(--green)]" strokeWidth={1.5} />
+          <h2 className="mt-4 text-xl font-semibold text-[var(--text)]">
             Account created
           </h2>
-          <p className="mt-1 text-sm text-[#667085]">
+          <p className="mt-1 text-sm text-[var(--muted)]">
             Redirecting you to your client portal…
           </p>
         </div>
@@ -157,8 +157,8 @@ export default function AcceptInvitePage() {
     return (
       <AuthLayout heading="Loading invitation" features={FEATURES}>
         <div className="flex flex-col items-center text-center">
-          <Loader2 className="h-10 w-10 animate-spin text-[#0F9F72]" strokeWidth={1.5} />
-          <p className="mt-4 text-sm text-[#667085]">One moment…</p>
+          <Loader2 className="h-10 w-10 animate-spin text-[var(--green)]" strokeWidth={1.5} />
+          <p className="mt-4 text-sm text-[var(--muted)]">One moment…</p>
         </div>
       </AuthLayout>
     );
@@ -170,13 +170,13 @@ export default function AcceptInvitePage() {
   if (load.kind === 'not-found') {
     return (
       <AuthLayout heading="Invitation not found" features={FEATURES}>
-        <div className="flex h-12 w-12 items-center justify-center rounded-full bg-[#FEF2F2]">
-          <XCircle className="h-6 w-6 text-[#DC2626]" strokeWidth={1.5} />
+        <div className="flex h-12 w-12 items-center justify-center rounded-full bg-[var(--red-soft)]">
+          <XCircle className="h-6 w-6 text-[var(--red)]" strokeWidth={1.5} />
         </div>
-        <h2 className="mt-4 text-xl font-semibold text-[#111827]">
+        <h2 className="mt-4 text-xl font-semibold text-[var(--text)]">
           We couldn't find that invitation
         </h2>
-        <p className="mt-1 text-sm text-[#667085]">
+        <p className="mt-1 text-sm text-[var(--muted)]">
           The link may be broken or the invitation has been deleted. Please ask the
           freelancer who sent it to share a fresh link.
         </p>
@@ -197,7 +197,7 @@ export default function AcceptInvitePage() {
   if (load.kind === 'error') {
     return (
       <AuthLayout heading="Couldn't load invitation" features={FEATURES}>
-        <p className="text-sm text-[#667085]">{load.message}</p>
+        <p className="text-sm text-[var(--muted)]">{load.message}</p>
         <div className="mt-6">
           <Link to="/client/login">
             <Button variant="secondary" className="w-full">
@@ -217,15 +217,15 @@ export default function AcceptInvitePage() {
   if (inv.status === 'accepted') {
     return (
       <AuthLayout heading="Already accepted" features={FEATURES}>
-        <div className="flex h-12 w-12 items-center justify-center rounded-full bg-[#EAF8F2]">
-          <CheckCircle2 className="h-6 w-6 text-[#0F9F72]" strokeWidth={1.5} />
+        <div className="flex h-12 w-12 items-center justify-center rounded-full bg-[var(--green-soft)]">
+          <CheckCircle2 className="h-6 w-6 text-[var(--green)]" strokeWidth={1.5} />
         </div>
-        <h2 className="mt-4 text-xl font-semibold text-[#111827]">
+        <h2 className="mt-4 text-xl font-semibold text-[var(--text)]">
           This invitation has already been accepted
         </h2>
-        <p className="mt-1 text-sm text-[#667085]">
+        <p className="mt-1 text-sm text-[var(--muted)]">
           You can sign in to your client portal with{' '}
-          <span className="font-medium text-[#111827]">{inv.email}</span>.
+          <span className="font-medium text-[var(--text)]">{inv.email}</span>.
         </p>
         <div className="mt-6 flex flex-col gap-2">
           <Link to="/client/login">
@@ -233,7 +233,7 @@ export default function AcceptInvitePage() {
           </Link>
           <Link
             to="/forgot-password"
-            className="text-center text-sm font-medium text-[#0F9F72] hover:text-[#087252]"
+            className="text-center text-sm font-medium text-[var(--green)] hover:text-[var(--green-dark)]"
           >
             Forgot your password?
           </Link>
@@ -245,13 +245,13 @@ export default function AcceptInvitePage() {
   if (inv.status === 'revoked') {
     return (
       <AuthLayout heading="Invitation revoked" features={FEATURES}>
-        <div className="flex h-12 w-12 items-center justify-center rounded-full bg-[#FEF2F2]">
-          <XCircle className="h-6 w-6 text-[#DC2626]" strokeWidth={1.5} />
+        <div className="flex h-12 w-12 items-center justify-center rounded-full bg-[var(--red-soft)]">
+          <XCircle className="h-6 w-6 text-[var(--red)]" strokeWidth={1.5} />
         </div>
-        <h2 className="mt-4 text-xl font-semibold text-[#111827]">
+        <h2 className="mt-4 text-xl font-semibold text-[var(--text)]">
           This invitation was revoked
         </h2>
-        <p className="mt-1 text-sm text-[#667085]">
+        <p className="mt-1 text-sm text-[var(--muted)]">
           {inv.freelancer_name} has cancelled this invitation. Please reach out to
           them if you believe this is a mistake.
         </p>
@@ -262,13 +262,13 @@ export default function AcceptInvitePage() {
   if (inv.status === 'expired') {
     return (
       <AuthLayout heading="Invitation expired" features={FEATURES}>
-        <div className="flex h-12 w-12 items-center justify-center rounded-full bg-[#FFF7ED]">
-          <XCircle className="h-6 w-6 text-[#D97706]" strokeWidth={1.5} />
+        <div className="flex h-12 w-12 items-center justify-center rounded-full bg-[var(--amber-soft)]">
+          <XCircle className="h-6 w-6 text-[var(--amber)]" strokeWidth={1.5} />
         </div>
-        <h2 className="mt-4 text-xl font-semibold text-[#111827]">
+        <h2 className="mt-4 text-xl font-semibold text-[var(--text)]">
           This invitation has expired
         </h2>
-        <p className="mt-1 text-sm text-[#667085]">
+        <p className="mt-1 text-sm text-[var(--muted)]">
           Invitations are valid for 7 days. Please ask {inv.freelancer_name} to send
           a fresh link.
         </p>
@@ -285,15 +285,15 @@ export default function AcceptInvitePage() {
       subheading={`${inv.freelancer_name} has invited you to view your projects and invoices.`}
       features={FEATURES}
     >
-      <div className="flex items-center gap-3 rounded-xl border border-[#E5E9F0] bg-[#F8FAFC] p-3">
+      <div className="flex items-center gap-3 rounded-xl border border-[var(--line)] bg-[var(--panel-soft)] p-3">
         <Avatar name={inv.freelancer_name} size="lg" />
         <div className="min-w-0 flex-1">
-          <div className="text-sm font-medium text-[#111827]">
+          <div className="text-sm font-medium text-[var(--text)]">
             Invited by {inv.freelancer_name}
           </div>
-          <div className="truncate text-xs text-[#667085]">
+          <div className="truncate text-xs text-[var(--muted)]">
             for{' '}
-            <span className="font-medium text-[#111827]">
+            <span className="font-medium text-[var(--text)]">
               {inv.client_company || inv.client_name}
             </span>{' '}
             · {inv.email}
@@ -301,10 +301,10 @@ export default function AcceptInvitePage() {
         </div>
       </div>
 
-      <h2 className="mt-6 text-xl font-semibold tracking-tight text-[#111827]">
+      <h2 className="mt-6 text-xl font-semibold tracking-tight text-[var(--text)]">
         Set your password
       </h2>
-      <p className="mt-1 text-sm text-[#667085]">
+      <p className="mt-1 text-sm text-[var(--muted)]">
         Choose a password to access your client portal.
       </p>
 
@@ -330,7 +330,7 @@ export default function AcceptInvitePage() {
         />
 
         {submitError && (
-          <div className="rounded-lg border border-[#FECACA] bg-[#FEF2F2] px-3 py-2 text-sm text-[#DC2626]">
+          <div className="rounded-lg border border-[#FECACA] bg-[var(--red-soft)] px-3 py-2 text-sm text-[var(--red)]">
             {submitError}
           </div>
         )}
@@ -340,7 +340,7 @@ export default function AcceptInvitePage() {
         </Button>
       </form>
 
-      <p className="mt-8 border-t border-[#E5E9F0] pt-4 text-xs text-[#98A2B3]">
+      <p className="mt-8 border-t border-[var(--line)] pt-4 text-xs text-[var(--faint)]">
         By continuing you agree to use this account responsibly. The freelancer who
         invited you can see when you've signed in and acknowledged invoices.
       </p>

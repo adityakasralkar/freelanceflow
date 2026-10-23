@@ -12,7 +12,7 @@ export default function Card({ children, className, ...rest }: CardProps) {
         'rounded-lg border border-[var(--line)] bg-white shadow-[var(--shadow-sm)]',
         className
       )}
-      style={{ borderRadius: 'var(--radius)' }}
+      style={{ borderRadius: 'var(--radius-lg)' }}
       {...rest}
     >
       {children}

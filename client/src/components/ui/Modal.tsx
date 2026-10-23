@@ -54,7 +54,7 @@ export default function Modal({
         className={cn(
           'flex w-full max-h-[90vh] flex-col overflow-hidden bg-white shadow-[0_24px_60px_rgba(16,24,40,0.25)]'
         )}
-        style={{ borderRadius: '14px', maxWidth: SIZE_WIDTH[size] }}
+        style={{ borderRadius: 'var(--radius-lg)', maxWidth: SIZE_WIDTH[size] }}
       >
         {(title || subtitle) && (
           <div className="flex items-start justify-between gap-4 px-6 pb-3 pt-5">
@@ -71,7 +71,7 @@ export default function Modal({
             <button
               type="button"
               onClick={onClose}
-              className="grid h-8 w-8 place-items-center rounded-md text-[var(--muted)] transition-colors hover:bg-[#f1f3f6] hover:text-[var(--text)]"
+              className="grid h-8 w-8 place-items-center rounded-md text-[var(--muted)] transition-colors hover:bg-[var(--panel-soft)] hover:text-[var(--text)]"
               aria-label="Close"
             >
               <X className="h-5 w-5" strokeWidth={1.5} />

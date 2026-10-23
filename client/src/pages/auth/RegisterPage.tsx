@@ -71,20 +71,20 @@ export default function RegisterPage() {
           'See cash flow at a glance',
         ]}
       >
-        <div className="flex h-12 w-12 items-center justify-center rounded-full bg-[#EAF8F2]">
-          <MailCheck className="h-6 w-6 text-[#0F9F72]" strokeWidth={1.5} />
+        <div className="flex h-12 w-12 items-center justify-center rounded-full bg-[var(--green-soft)]">
+          <MailCheck className="h-6 w-6 text-[var(--green)]" strokeWidth={1.5} />
         </div>
-        <h2 className="mt-4 text-2xl font-semibold tracking-tight text-[#111827]">
+        <h2 className="mt-4 text-2xl font-semibold tracking-tight text-[var(--text)]">
           Check your inbox
         </h2>
-        <p className="mt-1 text-sm text-[#667085]">
+        <p className="mt-1 text-sm text-[var(--muted)]">
           We've sent a verification link to{' '}
-          <span className="font-medium text-[#111827]">{registeredEmail}</span>.
+          <span className="font-medium text-[var(--text)]">{registeredEmail}</span>.
           Click the link in that email to activate your account.
         </p>
 
         {resendNotice && (
-          <div className="mt-4 rounded-lg border border-[#BFDBFE] bg-[#EFF6FF] px-3 py-2 text-sm text-[#2563EB]">
+          <div className="mt-4 rounded-lg border border-[#BFDBFE] bg-[var(--blue-soft)] px-3 py-2 text-sm text-[var(--blue)]">
             {resendNotice}
           </div>
         )}
@@ -95,13 +95,13 @@ export default function RegisterPage() {
           </Button>
           <Link
             to="/login"
-            className="text-center text-sm font-medium text-[#0F9F72] hover:text-[#087252]"
+            className="text-center text-sm font-medium text-[var(--green)] hover:text-[var(--green-dark)]"
           >
             Back to sign in
           </Link>
         </div>
 
-        <p className="mt-8 border-t border-[#E5E9F0] pt-4 text-xs text-[#98A2B3]">
+        <p className="mt-8 border-t border-[var(--line)] pt-4 text-xs text-[var(--faint)]">
           Didn't get the email? Check your spam folder, or request a new link
           using the button above.
         </p>
@@ -123,10 +123,10 @@ export default function RegisterPage() {
         'See cash flow at a glance',
       ]}
     >
-      <h2 className="text-2xl font-semibold tracking-tight text-[#111827]">
+      <h2 className="text-2xl font-semibold tracking-tight text-[var(--text)]">
         Create your account
       </h2>
-      <p className="mt-1 text-sm text-[#667085]">
+      <p className="mt-1 text-sm text-[var(--muted)]">
         Start managing your freelance business in minutes.
       </p>
 
@@ -161,7 +161,7 @@ export default function RegisterPage() {
         />
 
         {submitError && (
-          <div className="rounded-lg border border-[#FECACA] bg-[#FEF2F2] px-3 py-2 text-sm text-[#DC2626]">
+          <div className="rounded-lg border border-[#FECACA] bg-[var(--red-soft)] px-3 py-2 text-sm text-[var(--red)]">
             {submitError}
           </div>
         )}
@@ -171,9 +171,9 @@ export default function RegisterPage() {
         </Button>
       </form>
 
-      <div className="mt-8 border-t border-[#E5E9F0] pt-4 text-center text-sm text-[#667085]">
+      <div className="mt-8 border-t border-[var(--line)] pt-4 text-center text-sm text-[var(--muted)]">
         Already have an account?{' '}
-        <Link to="/login" className="font-medium text-[#0F9F72] hover:text-[#087252]">
+        <Link to="/login" className="font-medium text-[var(--green)] hover:text-[var(--green-dark)]">
           Sign in →
         </Link>
       </div>

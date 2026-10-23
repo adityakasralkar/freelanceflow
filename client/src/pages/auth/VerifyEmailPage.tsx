@@ -93,27 +93,27 @@ export default function VerifyEmailPage() {
     >
       {state.kind === 'verifying' && (
         <div className="flex flex-col items-center text-center">
-          <Loader2 className="h-10 w-10 animate-spin text-[#0F9F72]" strokeWidth={1.5} />
-          <h2 className="mt-4 text-xl font-semibold text-[#111827]">Verifying...</h2>
-          <p className="mt-1 text-sm text-[#667085]">Hang tight, this only takes a moment.</p>
+          <Loader2 className="h-10 w-10 animate-spin text-[var(--green)]" strokeWidth={1.5} />
+          <h2 className="mt-4 text-xl font-semibold text-[var(--text)]">Verifying...</h2>
+          <p className="mt-1 text-sm text-[var(--muted)]">Hang tight, this only takes a moment.</p>
         </div>
       )}
 
       {state.kind === 'success' && (
         <div className="flex flex-col items-center text-center">
-          <CheckCircle2 className="h-10 w-10 text-[#0F9F72]" strokeWidth={1.5} />
-          <h2 className="mt-4 text-xl font-semibold text-[#111827]">Email verified</h2>
-          <p className="mt-1 text-sm text-[#667085]">Redirecting you to your dashboard…</p>
+          <CheckCircle2 className="h-10 w-10 text-[var(--green)]" strokeWidth={1.5} />
+          <h2 className="mt-4 text-xl font-semibold text-[var(--text)]">Email verified</h2>
+          <p className="mt-1 text-sm text-[var(--muted)]">Redirecting you to your dashboard…</p>
         </div>
       )}
 
       {state.kind === 'expired' && (
         <div>
-          <div className="flex h-12 w-12 items-center justify-center rounded-full bg-[#FEF2F2]">
-            <XCircle className="h-6 w-6 text-[#DC2626]" strokeWidth={1.5} />
+          <div className="flex h-12 w-12 items-center justify-center rounded-full bg-[var(--red-soft)]">
+            <XCircle className="h-6 w-6 text-[var(--red)]" strokeWidth={1.5} />
           </div>
-          <h2 className="mt-4 text-xl font-semibold text-[#111827]">Link expired</h2>
-          <p className="mt-1 text-sm text-[#667085]">
+          <h2 className="mt-4 text-xl font-semibold text-[var(--text)]">Link expired</h2>
+          <p className="mt-1 text-sm text-[var(--muted)]">
             That verification link has expired. Enter your email and we'll send a fresh one.
           </p>
 
@@ -128,7 +128,7 @@ export default function VerifyEmailPage() {
               onChange={(e) => setResendEmail(e.target.value)}
             />
             {resendNotice && (
-              <div className="rounded-lg border border-[#BFDBFE] bg-[#EFF6FF] px-3 py-2 text-sm text-[#2563EB]">
+              <div className="rounded-lg border border-[#BFDBFE] bg-[var(--blue-soft)] px-3 py-2 text-sm text-[var(--blue)]">
                 {resendNotice}
               </div>
             )}
@@ -137,7 +137,7 @@ export default function VerifyEmailPage() {
             </Button>
             <Link
               to="/login"
-              className="block text-center text-sm font-medium text-[#0F9F72] hover:text-[#087252]"
+              className="block text-center text-sm font-medium text-[var(--green)] hover:text-[var(--green-dark)]"
             >
               Back to sign in
             </Link>
@@ -147,11 +147,11 @@ export default function VerifyEmailPage() {
 
       {state.kind === 'invalid' && (
         <div>
-          <div className="flex h-12 w-12 items-center justify-center rounded-full bg-[#FEF2F2]">
-            <XCircle className="h-6 w-6 text-[#DC2626]" strokeWidth={1.5} />
+          <div className="flex h-12 w-12 items-center justify-center rounded-full bg-[var(--red-soft)]">
+            <XCircle className="h-6 w-6 text-[var(--red)]" strokeWidth={1.5} />
           </div>
-          <h2 className="mt-4 text-xl font-semibold text-[#111827]">Verification failed</h2>
-          <p className="mt-1 text-sm text-[#667085]">{state.message}</p>
+          <h2 className="mt-4 text-xl font-semibold text-[var(--text)]">Verification failed</h2>
+          <p className="mt-1 text-sm text-[var(--muted)]">{state.message}</p>
           <div className="mt-6 flex flex-col gap-2">
             <Link to="/login">
               <Button variant="secondary" className="w-full">

@@ -88,7 +88,7 @@ export default function ClientsPage() {
         {isLoading ? (
           <div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3">
             {[0, 1, 2, 3, 4, 5].map((item) => (
-              <Card key={item} className="h-[186px] animate-pulse bg-[#f3f6fa]" />
+              <Card key={item} className="h-[186px] animate-pulse bg-[var(--surface2)]" />
             ))}
           </div>
         ) : filtered.length === 0 ? (

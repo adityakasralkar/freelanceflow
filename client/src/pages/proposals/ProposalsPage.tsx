@@ -93,7 +93,7 @@ export default function ProposalsPage() {
                       'rounded-full px-1.5 text-[11px] font-semibold',
                       isActive
                         ? 'bg-[var(--green-soft)] text-[var(--green-dark)]'
-                        : 'bg-[#eef0f3] text-[var(--muted)]'
+                        : 'bg-[#eef1ef] text-[var(--muted)]'
                     )}
                   >
                     {counts[key]}
@@ -187,7 +187,7 @@ function ProposalRow({
   return (
     <tr
       onClick={onClick}
-      className="cursor-pointer border-b border-[var(--line)] transition-colors hover:bg-[#fafbfc] last:border-b-0"
+      className="cursor-pointer border-b border-[var(--line)] transition-colors hover:bg-[var(--panel-soft)] last:border-b-0"
     >
       <td className="px-4 py-3.5">
         <div className="font-semibold text-[var(--text)]">{proposal.title}</div>

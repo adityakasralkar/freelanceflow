@@ -379,7 +379,7 @@ function CountPill({
         'rounded-full px-1.5 text-[11px] font-semibold',
         active
           ? 'bg-[var(--green-soft)] text-[var(--green-dark)]'
-          : 'bg-[#eef0f3] text-[var(--muted)]'
+          : 'bg-[#eef1ef] text-[var(--muted)]'
       )}
     >
       {children}

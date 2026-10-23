@@ -22,7 +22,7 @@ export default function ClientProjectsPage() {
       {isLoading ? (
         <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
           {[0, 1, 2, 3].map((item) => (
-            <Card key={item} className="h-[180px] animate-pulse bg-[#f3f6fa]" />
+            <Card key={item} className="h-[180px] animate-pulse bg-[var(--surface2)]" />
           ))}
         </div>
       ) : projects.length === 0 ? (
